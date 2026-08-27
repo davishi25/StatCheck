@@ -10,7 +10,7 @@ public class EventHandler {
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
         if(!newWorld) return;
-        StatCheck.checkStats(StatCheck.user.getName(),"");
+
         newWorld = false;
     }
 

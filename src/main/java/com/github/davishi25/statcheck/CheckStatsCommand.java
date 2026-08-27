@@ -1,10 +1,14 @@
 package com.github.davishi25.statcheck;
 
+import com.github.davishi25.statcheck.parser.ApiParser;
+import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+
+import java.util.Collections;
 
 public class CheckStatsCommand extends CommandBase {
     @Override
@@ -17,16 +21,39 @@ public class CheckStatsCommand extends CommandBase {
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         StatCheck.user = Minecraft.getMinecraft().thePlayer;
         if(args.length == 0) {
-            StatCheck.checkStats(StatCheck.user.getName(),"");
+            createStatMessage(StatCheck.user.getName(),"");
         } else if(args.length == 1) {
             StatCheck.user.addChatMessage(new ChatComponentText("§cError, specify a gamemode"));
         } else if(args.length == 2){
-            StatCheck.checkStats(args[0],args[1]);
+            createStatMessage(args[0],args[1]);
         }
     }
 
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) { return true; }
 
+    static void createStatMessage(String player, String game) {
+        Thread thread = new Thread(() -> {
+            try {
+                JsonObject apiResponse = API.getAPI(player);
+                ApiParser parser = Util.parsers.get(game);
+                if(parser == null) throw new NullPointerException("Couldn't find gamemode \"" + game + "\". Did you spell it correctly?");
 
+                String nameLine = Util.getNameLine(apiResponse, parser);
+                String statLine = checkStats(apiResponse.getAsJsonObject("stats"),parser);
+                String endLine = "\n§7" + String.join("", Collections.nCopies(Util.stripColorCodes(nameLine).length(),"-"));
+
+                String message = nameLine + statLine + endLine;
+                StatCheck.user.addChatMessage(new ChatComponentText(message));
+            } catch (Exception e) {
+                StatCheck.user.addChatMessage(new ChatComponentText("§cEncountered an error: ").appendText(e.toString()));
+                System.out.println(e);
+            }
+        });
+        thread.start();
+    }
+
+    static String checkStats(JsonObject playerObj, ApiParser parser) {
+        return parser.getStatLine(playerObj);
+    }
 }
