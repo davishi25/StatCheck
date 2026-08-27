@@ -39,11 +39,11 @@ public class CheckStatsCommand extends CommandBase {
                 ApiParser parser = Util.parsers.get(game);
                 if(parser == null) throw new NullPointerException("Couldn't find gamemode \"" + game + "\". Did you spell it correctly?");
 
-                String nameLine = Util.getNameLine(apiResponse, parser);
-                String statLine = checkStats(apiResponse.getAsJsonObject("stats"),parser);
-                String endLine = "\n§7" + String.join("", Collections.nCopies(Util.stripColorCodes(nameLine).length(),"-"));
+                final String padding = "§8----------------------------------------";
+                final String nameLine = Util.getNameLine(apiResponse, parser);
+                final String statLine = checkStats(apiResponse.getAsJsonObject("stats"),parser);
 
-                String message = nameLine + statLine + endLine;
+                String message = padding + "\n" + nameLine + statLine + "\n" + padding;
                 StatCheck.user.addChatMessage(new ChatComponentText(message));
             } catch (Exception e) {
                 StatCheck.user.addChatMessage(new ChatComponentText("§cEncountered an error: ").appendText(e.toString()));

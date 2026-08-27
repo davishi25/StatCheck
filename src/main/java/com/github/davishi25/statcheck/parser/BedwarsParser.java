@@ -3,22 +3,26 @@ package com.github.davishi25.statcheck.parser;
 import com.github.davishi25.statcheck.Util;
 import com.google.gson.JsonObject;
 
-public class BedwarsParser implements ApiParser{
+public class BedwarsParser implements ApiParser {
+    public static class BedwarsContext {
+        private final JsonObject bedwarsObj;
+
+        BedwarsContext(JsonObject bedwarsObj) {
+            this.bedwarsObj = bedwarsObj;
+        }
+        public int getWins() { return Util.safeGetInt(bedwarsObj,"wins_bedwars"); }
+        public int getFinals() { return Util.safeGetInt(bedwarsObj,"final_kills_bedwars"); }
+        public int getFinalDeaths() { return Util.safeGetInt(bedwarsObj,"final_deaths_bedwars"); }
+        public double getFKDR() {
+            int deaths = getFinalDeaths();
+            return (double)getFinals() / (deaths != 0 ? deaths : 1);
+        }
+    }
     public String getStatLine(JsonObject playerObj) {
-        return "§rW: §a" + getWins(playerObj) + "§r | Finals: " + getFinals(playerObj) + " | FKDR: " + Util.roundToPrecision(getFKDR(playerObj),2);
+        BedwarsContext ctx = new BedwarsContext(playerObj.getAsJsonObject("Bedwars"));
+        return "§rW: §a" + ctx.getWins() + "§r | Finals: " + ctx.getFinals() + " | FKDR: " + Util.roundToPrecision(ctx.getFKDR(),2);
     }
-    public int getWins(JsonObject playerObj) {
-        return playerObj.getAsJsonObject("Bedwars").get("wins_bedwars").getAsInt();
-    }
-    public int getFinals(JsonObject playerObj) {
-        return playerObj.getAsJsonObject("Bedwars").get("final_kills_bedwars").getAsInt();
-    }
-    public int getFinalDeaths(JsonObject playerObj) {
-        return playerObj.getAsJsonObject("Bedwars").get("final_deaths_bedwars").getAsInt();
-    }
-    public double getFKDR(JsonObject playerObj) {
-        return (double)getFinals(playerObj) / getFinalDeaths(playerObj);
-    }
+
     public String toString() {
         return "BedWars";
     }

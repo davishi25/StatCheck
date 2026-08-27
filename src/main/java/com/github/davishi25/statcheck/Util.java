@@ -2,6 +2,7 @@ package com.github.davishi25.statcheck;
 
 import com.github.davishi25.statcheck.parser.ApiParser;
 import com.github.davishi25.statcheck.parser.BedwarsParser;
+import com.github.davishi25.statcheck.parser.BridgeDuelsParser;
 import com.github.davishi25.statcheck.parser.DuelsParser;
 import com.google.gson.JsonObject;
 
@@ -40,6 +41,9 @@ public class Util {
         final ApiParser duelsParser = new DuelsParser();
         parsers.put("d",duelsParser);
         parsers.put("duels",duelsParser);
+        final ApiParser bridgeDuelsParser = new BridgeDuelsParser();
+        parsers.put("b",bridgeDuelsParser);
+        parsers.put("bridge",bridgeDuelsParser);
     }
 
     public static String getFormattedName(String name) { return getFormattedName(API.getAPI(name)); }
@@ -66,7 +70,7 @@ public class Util {
     }
 
     public static String getNameLine(JsonObject playerObj, ApiParser game) {
-        return "§7---- " + getFormattedName(playerObj) + "'s §r" + game.toString() + " stats §7----\n";
+        return getFormattedName(playerObj) + "'s §r" + game.toString() + "\n";
     }
 
     public static double roundToPrecision(double n, int decimals) {
@@ -75,4 +79,11 @@ public class Util {
     }
 
     public static String stripColorCodes(String s) { return s.replaceAll("§.", ""); }
+
+    public static int safeGetInt(JsonObject obj, String target) {
+        return obj.has(target) ? obj.get(target).getAsInt() : 0;
+    }
+    public static double safeGetDouble(JsonObject obj, String target) {
+        return obj.has(target) ? obj.get(target).getAsDouble() : 0.0;
+    }
 }
