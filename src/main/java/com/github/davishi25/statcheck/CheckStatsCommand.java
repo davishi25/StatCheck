@@ -3,12 +3,11 @@ package com.github.davishi25.statcheck;
 import com.github.davishi25.statcheck.parser.ApiParser;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
-
-import java.util.Collections;
 
 public class CheckStatsCommand extends CommandBase {
     @Override
@@ -19,11 +18,11 @@ public class CheckStatsCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        StatCheck.user = Minecraft.getMinecraft().thePlayer;
+        final EntityPlayerSP user = Minecraft.getMinecraft().thePlayer;
         if(args.length == 0) {
-            createStatMessage(StatCheck.user.getName(),"");
+            createStatMessage(user.getName(),"");
         } else if(args.length == 1) {
-            StatCheck.user.addChatMessage(new ChatComponentText("§cError, specify a gamemode"));
+            user.addChatMessage(new ChatComponentText("§cError, specify a gamemode"));
         } else if(args.length == 2){
             createStatMessage(args[0],args[1]);
         }
@@ -34,6 +33,7 @@ public class CheckStatsCommand extends CommandBase {
 
     static void createStatMessage(String player, String game) {
         Thread thread = new Thread(() -> {
+            final EntityPlayerSP user = Minecraft.getMinecraft().thePlayer;
             try {
                 JsonObject apiResponse = API.getAPI(player);
                 ApiParser parser = Util.parsers.get(game);
@@ -43,11 +43,12 @@ public class CheckStatsCommand extends CommandBase {
                 final String nameLine = Util.getNameLine(apiResponse, parser);
                 final String statLine = checkStats(apiResponse.getAsJsonObject("stats"),parser);
 
-                String message = padding + "\n" + nameLine + statLine + "\n" + padding;
-                StatCheck.user.addChatMessage(new ChatComponentText(message));
+                String message = padding + "\n§8| " + nameLine + "§8| " + statLine + "\n" + padding;
+                user.addChatMessage(new ChatComponentText(message));
             } catch (Exception e) {
-                StatCheck.user.addChatMessage(new ChatComponentText("§cEncountered an error: ").appendText(e.toString()));
+                user.addChatMessage(new ChatComponentText("§cEncountered an error: ").appendText(e.toString()));
                 System.out.println(e);
+                throw e;
             }
         });
         thread.start();

@@ -21,7 +21,7 @@ public class Util {
 
         rankColors.put(null,"§c");
         rankColors.put("RED","§c");
-        rankColors.put("ORANGE","§6");
+        rankColors.put("GOLD","§6");
         rankColors.put("GREEN","§a");
         rankColors.put("YELLOW","§e");
         rankColors.put("LIGHT_PURPLE","§d");
@@ -81,9 +81,11 @@ public class Util {
     public static String stripColorCodes(String s) { return s.replaceAll("§.", ""); }
 
     public static int safeGetInt(JsonObject obj, String target) {
+        if(obj == null) return 0;
         return obj.has(target) ? obj.get(target).getAsInt() : 0;
     }
     public static double safeGetDouble(JsonObject obj, String target) {
+        if(obj == null) return 0;
         return obj.has(target) ? obj.get(target).getAsDouble() : 0.0;
     }
 }
