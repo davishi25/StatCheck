@@ -12,8 +12,7 @@ import java.util.Map;
 public class Util {
     public static final Map<String,String> ranks = new HashMap();
     public static final Map<String,String> rankColors = new HashMap();
-    public static final Map<String, ApiParser> parsers = new HashMap();
-
+    public static final String[] duelsModes = new String[]{"bridge"};
     static {
         ranks.put("VIP","§a[VIP]");
         ranks.put("VIP_PLUS","§a[VIP§6+§a]");
@@ -34,16 +33,6 @@ public class Util {
         rankColors.put("DARK_GRAY","§8");
         rankColors.put("BLACK","§0");
         rankColors.put("DARK_BLUE","§1");
-
-        final ApiParser bwParser = new BedwarsParser();
-        parsers.put("bw", bwParser);
-        parsers.put("bedwars", bwParser);
-        final ApiParser duelsParser = new DuelsParser();
-        parsers.put("d",duelsParser);
-        parsers.put("duels",duelsParser);
-        final ApiParser bridgeDuelsParser = new BridgeDuelsParser();
-        parsers.put("b",bridgeDuelsParser);
-        parsers.put("bridge",bridgeDuelsParser);
     }
 
     public static String getFormattedName(String name) { return getFormattedName(API.getAPI(name)); }

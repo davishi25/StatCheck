@@ -36,7 +36,7 @@ public class CheckStatsCommand extends CommandBase {
             final EntityPlayerSP user = Minecraft.getMinecraft().thePlayer;
             try {
                 JsonObject apiResponse = API.getAPI(player);
-                ApiParser parser = Util.parsers.get(game);
+                ApiParser parser = ApiParserRegistry.parsers.get(game);
                 if(parser == null) throw new NullPointerException("Couldn't find gamemode \"" + game + "\". Did you spell it correctly?");
 
                 final String padding = "§8----------------------------------------";
@@ -46,7 +46,7 @@ public class CheckStatsCommand extends CommandBase {
                 String message = padding + "\n§8| " + nameLine + "§8| " + statLine + "\n" + padding;
                 user.addChatMessage(new ChatComponentText(message));
             } catch (Exception e) {
-                user.addChatMessage(new ChatComponentText("§cEncountered an error: ").appendText(e.toString()));
+                user.addChatMessage(new ChatComponentText("§c§l[SC] Error: §r§c").appendText(e.getCause().getMessage()));
                 System.out.println(e);
                 throw e;
             }

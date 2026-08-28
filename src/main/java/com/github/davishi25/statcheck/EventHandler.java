@@ -31,7 +31,7 @@ public class EventHandler {
         }
         if(isGameStarting && event.message.getUnformattedText().contains("▬")) {
             //user.addChatMessage(new ChatComponentText("Detected that you started " + mostRecentGame + "!"));
-            statTick = 20;
+            statTick = 30;
             newWorld = false;
         }
     }
@@ -98,14 +98,27 @@ public class EventHandler {
     public void determineLocation(ClientChatReceivedEvent event) {
         if(!awaitingLocation) return;
         if(event.message == null) return;
-        String jsonString = event.message.getUnformattedText();
+        final String jsonString = event.message.getUnformattedText();
         //sketchy solution may not work
         if(!jsonString.startsWith("{")) return;
 
-        JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
+        final JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
         final boolean isInGame = jsonObject.get("gametype") != null;
         mostRecentGame = isInGame ? jsonObject.get("gametype").getAsString().toLowerCase() : "lobby";
+        //Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Detected game: " + mostRecentGame));
+
+        //try to detect a duels gamemode
+        final String duelsGameMode = getDuelsGamemode(jsonObject);
+        if(mostRecentGame.equals("duels") && duelsGameMode != null)
+            mostRecentGame = getDuelsGamemode(jsonObject);
         awaitingLocation = false;
         event.setCanceled(true);
+    }
+    private String getDuelsGamemode(JsonObject obj) {
+        if(obj.get("mode") == null) return null;
+        final String gamemode = obj.get("mode").getAsString().toLowerCase();
+        for(String mode : Util.duelsModes)
+            if(gamemode.contains(mode)) return mode;
+        return null;
     }
 }
