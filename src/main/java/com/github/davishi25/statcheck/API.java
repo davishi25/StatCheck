@@ -2,6 +2,7 @@ package com.github.davishi25.statcheck;
 
 
 import com.google.gson.Gson;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 import java.io.InputStreamReader;
@@ -23,9 +24,12 @@ public class API {
         try {
             URL url = new URL("https://api.hypixel.net/player?key=" + key + "&name=" + playerName);
             Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
-            JsonObject apiResponse = gson.fromJson(reader, JsonObject.class).getAsJsonObject("player");
-            recentCalls.put(playerName,apiResponse);
-            return apiResponse;
+
+            JsonObject apiResponse = gson.fromJson(reader, JsonObject.class);
+            if(apiResponse.get("player") instanceof JsonNull) throw new Exception("§c" + playerName + " does not exist. Are they nicked?");
+            JsonObject playerResponse = apiResponse.getAsJsonObject("player");
+            recentCalls.put(playerName,playerResponse);
+            return playerResponse;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
