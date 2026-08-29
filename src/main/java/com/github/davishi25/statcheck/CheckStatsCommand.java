@@ -46,9 +46,8 @@ public class CheckStatsCommand extends CommandBase {
                 String message = padding + "\n§8| " + nameLine + "§8| " + statLine + "\n" + padding;
                 user.addChatMessage(new ChatComponentText(message));
             } catch (Exception e) {
-                user.addChatMessage(new ChatComponentText("§c§l[SC] Error: §r§c").appendText(e.getCause().getMessage()));
-                System.out.println(e);
-                throw e;
+                user.addChatMessage(new ChatComponentText("§c[SC] Error: ").appendText(e.getMessage()));
+                System.err.println(e);
             }
         });
         thread.start();
