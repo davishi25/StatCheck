@@ -32,4 +32,5 @@ public class API {
             throw new RuntimeException(e);
         }
     }
+    static Map<String,JsonObject> getRecentCalls() { return recentCalls; }
 }
