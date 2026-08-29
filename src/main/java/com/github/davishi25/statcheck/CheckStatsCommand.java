@@ -28,8 +28,17 @@ public class CheckStatsCommand extends CommandBase {
         } else if(args.length == 2){
             createStatMessage(args[0],args[1]);
         } else if(args.length == 3) {
-            if(args[1].equals("d") || args[1].equals("duels"))
-                createDuelsStatMessage(args[0],args[2]);
+            if(args[1].equals("d") || args[1].equals("duels")) {
+                String supportedGames = "";
+                for(String duelsMode : Util.duelsModes) {
+                    if(duelsMode.equals(args[2])) {
+                        createDuelsStatMessage(args[0], args[2]);
+                        return;
+                    }
+                    supportedGames += duelsMode + " ";
+                }
+                user.addChatMessage(new ChatComponentText("§cError: unsupported game \"" + args[2] + "\"\n§cSupported args: " + supportedGames));
+            }
         }
     }
 
