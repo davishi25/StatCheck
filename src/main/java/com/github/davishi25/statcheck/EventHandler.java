@@ -20,6 +20,7 @@ public class EventHandler {
     private boolean newWorld = false;
     private boolean isGameStarting = false;
     private String mostRecentGame;
+    private String mostRecentDuelsGamemode;
     private int statTick = -1;
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
@@ -53,7 +54,11 @@ public class EventHandler {
             }
             for(String name : names) {
                 try {
-                    CheckStatsCommand.createStatMessage(name, mostRecentGame);
+                    if(mostRecentGame.equals("duels")) {
+                        CheckStatsCommand.createDuelsStatMessage(name, mostRecentDuelsGamemode);
+                    } else {
+                        CheckStatsCommand.createStatMessage(name, mostRecentGame);
+                    }
                 } catch (Exception e) {
                     user.addChatMessage(new ChatComponentText("Encountered Error on name" + name + ": " + e.getMessage()));
                 }
@@ -110,7 +115,7 @@ public class EventHandler {
         //try to detect a duels gamemode
         final String duelsGameMode = getDuelsGamemode(jsonObject);
         if(mostRecentGame.equals("duels") && duelsGameMode != null)
-            mostRecentGame = getDuelsGamemode(jsonObject);
+            mostRecentDuelsGamemode = duelsGameMode;
         awaitingLocation = false;
         event.setCanceled(true);
     }

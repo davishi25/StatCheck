@@ -1,9 +1,6 @@
 package com.github.davishi25.statcheck;
 
-import com.github.davishi25.statcheck.parser.ApiParser;
-import com.github.davishi25.statcheck.parser.BedwarsParser;
-import com.github.davishi25.statcheck.parser.BridgeDuelsParser;
-import com.github.davishi25.statcheck.parser.DuelsParser;
+import com.github.davishi25.statcheck.parser.*;
 
 import java.util.HashMap;
 import java.util.Map;

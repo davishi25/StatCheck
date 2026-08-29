@@ -1,9 +1,6 @@
 package com.github.davishi25.statcheck;
 
 import com.github.davishi25.statcheck.parser.ApiParser;
-import com.github.davishi25.statcheck.parser.BedwarsParser;
-import com.github.davishi25.statcheck.parser.BridgeDuelsParser;
-import com.github.davishi25.statcheck.parser.DuelsParser;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -12,7 +9,7 @@ import java.util.Map;
 public class Util {
     public static final Map<String,String> ranks = new HashMap();
     public static final Map<String,String> rankColors = new HashMap();
-    public static final String[] duelsModes = new String[]{"bridge"};
+    public static final String[] duelsModes = new String[]{"bridge","sumo","uhc","sw","mw","bow","tnt","boxing","combo","blitz","op","parkour","quake","potion",};
     static {
         ranks.put("VIP","§a[VIP]");
         ranks.put("VIP_PLUS","§a[VIP§6+§a]");
