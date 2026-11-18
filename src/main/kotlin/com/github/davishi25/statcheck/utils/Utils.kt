@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.util.ChatComponentText
 import kotlin.math.pow
-import kotlin.reflect.full.memberProperties
 
 object Utils {
     val mc: Minecraft get() = Minecraft.getMinecraft()
@@ -93,7 +92,13 @@ object Utils {
     fun String.stripColorCodes(): String = replace("§.", "")
 
     fun Any.getPropertyByName(variableName: String): Any? {
-        val property = this::class.memberProperties.find { it.name == variableName }
-        return property?.call(this)
+        return try {
+            val clazz = this.javaClass
+            val field = clazz.getDeclaredField(variableName)
+            field.isAccessible = true
+            field.get(this)
+        } catch (e: Exception) {
+            null
+        }
     }
 }
