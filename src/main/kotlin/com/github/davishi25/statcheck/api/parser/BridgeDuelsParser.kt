@@ -1,9 +1,9 @@
-package com.github.davishi25.statcheck.utils.api.parser
+package com.github.davishi25.statcheck.api.parser
 
 import com.github.davishi25.statcheck.utils.Utils
 import com.github.davishi25.statcheck.utils.Utils.roundToPrecision
-import com.github.davishi25.statcheck.utils.api.playerdata.StatsData
-import com.github.davishi25.statcheck.utils.api.playerdata.stats.DuelsData
+import com.github.davishi25.statcheck.api.playerdata.StatsData
+import com.github.davishi25.statcheck.api.playerdata.stats.DuelsData
 
 object BridgeDuelsParser: ApiParser{
     class BridgeDuelsContext(bridgeDuelsData: DuelsData): DuelsParser.DuelsContext("bridge", bridgeDuelsData) {

@@ -1,8 +1,8 @@
 package com.github.davishi25.statcheck.utils
 
-import com.github.davishi25.statcheck.utils.api.API
-import com.github.davishi25.statcheck.utils.api.parser.ApiParser
-import com.github.davishi25.statcheck.utils.api.playerdata.PlayerData
+import com.github.davishi25.statcheck.api.API
+import com.github.davishi25.statcheck.api.parser.ApiParser
+import com.github.davishi25.statcheck.api.playerdata.PlayerData
 import net.minecraft.client.Minecraft
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.util.ChatComponentText

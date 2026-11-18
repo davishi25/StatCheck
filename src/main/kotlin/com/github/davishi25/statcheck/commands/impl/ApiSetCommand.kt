@@ -1,6 +1,6 @@
 package com.github.davishi25.statcheck.commands.impl
 
-import com.github.davishi25.statcheck.utils.api.API
+import com.github.davishi25.statcheck.api.API
 import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.utils.Utils
 import net.minecraft.command.CommandBase

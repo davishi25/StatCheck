@@ -1,11 +1,11 @@
 package com.github.davishi25.statcheck.utils
 
-import com.github.davishi25.statcheck.utils.api.API
-import com.github.davishi25.statcheck.utils.api.ApiParserRegistry
-import com.github.davishi25.statcheck.utils.api.parser.ApiParser
-import com.github.davishi25.statcheck.utils.api.parser.BridgeDuelsParser
-import com.github.davishi25.statcheck.utils.api.parser.DuelsParser
-import com.github.davishi25.statcheck.utils.api.playerdata.StatsData
+import com.github.davishi25.statcheck.api.API
+import com.github.davishi25.statcheck.api.ApiParserRegistry
+import com.github.davishi25.statcheck.api.parser.ApiParser
+import com.github.davishi25.statcheck.api.parser.BridgeDuelsParser
+import com.github.davishi25.statcheck.api.parser.DuelsParser
+import com.github.davishi25.statcheck.api.playerdata.StatsData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

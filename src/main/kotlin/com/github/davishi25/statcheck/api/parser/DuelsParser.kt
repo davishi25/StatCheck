@@ -1,10 +1,10 @@
-package com.github.davishi25.statcheck.utils.api.parser
+package com.github.davishi25.statcheck.api.parser
 
 import com.github.davishi25.statcheck.utils.Utils
 import com.github.davishi25.statcheck.utils.Utils.getPropertyByName
 import com.github.davishi25.statcheck.utils.Utils.roundToPrecision
-import com.github.davishi25.statcheck.utils.api.playerdata.StatsData
-import com.github.davishi25.statcheck.utils.api.playerdata.stats.DuelsData
+import com.github.davishi25.statcheck.api.playerdata.StatsData
+import com.github.davishi25.statcheck.api.playerdata.stats.DuelsData
 
 object DuelsParser : ApiParser {
     open class DuelsContext(private val gamemode: String?, private val duelsData: DuelsData) {
