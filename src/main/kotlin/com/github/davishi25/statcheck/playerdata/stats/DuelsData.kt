@@ -13,6 +13,8 @@ data class DuelsData(
     val bridge_duel_losses: Int?,
     val bridge_doubles_wins: Int?,
     val bridge_doubles_losses: Int?,
+    val bridge_threes_wins: Int?,
+    val bridge_threes_losses: Int?,
     val bridge_four_wins: Int?,
     val bridge_four_losses: Int?,
     val bridge_3v3v3v3_wins: Int?,
