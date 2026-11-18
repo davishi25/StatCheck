@@ -1,5 +1,6 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.utils
 
+import com.github.davishi25.statcheck.API
 import com.github.davishi25.statcheck.parser.ApiParser
 import com.github.davishi25.statcheck.playerdata.PlayerData
 import net.minecraft.client.Minecraft

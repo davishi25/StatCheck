@@ -1,5 +1,6 @@
 package com.github.davishi25.statcheck
 
+import com.github.davishi25.statcheck.utils.Utils
 import net.minecraft.command.CommandBase
 import net.minecraft.command.ICommandSender
 

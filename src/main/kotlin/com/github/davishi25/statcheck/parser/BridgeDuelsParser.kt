@@ -1,7 +1,7 @@
 package com.github.davishi25.statcheck.parser
 
-import com.github.davishi25.statcheck.Utils
-import com.github.davishi25.statcheck.Utils.roundToPrecision
+import com.github.davishi25.statcheck.utils.Utils
+import com.github.davishi25.statcheck.utils.Utils.roundToPrecision
 import com.github.davishi25.statcheck.playerdata.StatsData
 import com.github.davishi25.statcheck.playerdata.stats.DuelsData
 

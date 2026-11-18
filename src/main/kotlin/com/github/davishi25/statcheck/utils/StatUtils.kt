@@ -1,5 +1,7 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.utils
 
+import com.github.davishi25.statcheck.API
+import com.github.davishi25.statcheck.ApiParserRegistry
 import com.github.davishi25.statcheck.parser.ApiParser
 import com.github.davishi25.statcheck.parser.BridgeDuelsParser
 import com.github.davishi25.statcheck.parser.DuelsParser

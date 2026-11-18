@@ -1,5 +1,6 @@
 package com.github.davishi25.statcheck
 
+import com.github.davishi25.statcheck.event.EventHandler
 import net.minecraftforge.client.ClientCommandHandler
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod

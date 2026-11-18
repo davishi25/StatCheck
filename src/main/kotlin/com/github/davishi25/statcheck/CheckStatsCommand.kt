@@ -1,6 +1,8 @@
 package com.github.davishi25.statcheck
 
-import com.github.davishi25.statcheck.Utils.user
+import com.github.davishi25.statcheck.utils.Utils.user
+import com.github.davishi25.statcheck.utils.StatUtils
+import com.github.davishi25.statcheck.utils.Utils
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender

@@ -1,9 +1,11 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.event
 
+import com.github.davishi25.statcheck.utils.StatUtils
+import com.github.davishi25.statcheck.utils.Utils
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import net.minecraft.client.Minecraft
-import com.github.davishi25.statcheck.Utils.user
+import com.github.davishi25.statcheck.utils.Utils.user
 
 import net.minecraft.util.ChatComponentText
 import net.minecraftforge.client.event.ClientChatReceivedEvent
