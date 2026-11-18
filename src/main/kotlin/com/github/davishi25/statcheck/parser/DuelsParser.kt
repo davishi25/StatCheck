@@ -36,6 +36,7 @@ object DuelsParser : ApiParser {
         val ctx = DuelsContext(gamemode, statsData.duels)
         return "§rW: §a${ctx.getWins()}§r | L: §c${ctx.getLosses()}§r | WLR: ${ctx.getWLR().roundToPrecision(2)}"
     }
+    override fun getVitalStatLine(statsData: StatsData?): String = BedwarsParser.getStatLine(statsData)
 
     override fun toString() = "Duels"
 }

@@ -27,7 +27,22 @@ object StatUtils {
         }
     }
 
+    fun createMinimalStatMessage(player: String, game: String) = scope.launch {
+        try {
+            val playerData = API.getAPI(player)
+            val parser = ApiParserRegistry.parsers[game]
+                ?: throw NullPointerException("Couldn't find gamemode \"$game\". Did you spell it correctly?")
+            val formattedName = Utils.getFormattedName(playerData)
+            val statLine = checkVitalStats(playerData.stats, parser)
+
+            Utils.chat("$formattedName §8| $statLine")
+        } catch (e: Exception) {
+            Utils.modMessage(e.message)
+        }
+    }
+
     fun checkStats(statsData: StatsData?, parser: ApiParser): String = parser.getStatLine(statsData)
+    fun checkVitalStats(statsData: StatsData?, parser: ApiParser): String = parser.getVitalStatLine(statsData)
 
     fun createDuelsStatMessage(player: String, duelsMode: String?) = scope.launch {
         try {

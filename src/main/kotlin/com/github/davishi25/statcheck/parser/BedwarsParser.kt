@@ -22,6 +22,13 @@ object BedwarsParser: ApiParser {
         val ctx = BedwarsContext(statsData.bedwars)
         return "§rW: §a" + ctx.getWins() + "§r | Finals: " + ctx.getFinals() + " | FKDR: " + ctx.getFKDR().roundToPrecision(2)
     }
+    override fun getVitalStatLine(statsData: StatsData?): String {
+        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        val ctx = BedwarsContext(statsData.bedwars)
+        val finals = ctx.getFinals()
+        val FKDR = ctx.getFKDR().roundToPrecision(2)
+        return "§rFinals: $finals §8| §rFKDR: $FKDR"
+    }
 
     override fun toString() = "Bedwars"
 }

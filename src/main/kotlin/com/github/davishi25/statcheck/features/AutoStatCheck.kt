@@ -26,7 +26,7 @@ object AutoStatCheck {
                 if(LocationUtils.currentMode.equals("DUELS")) {
                     StatUtils.createDuelsStatMessage(name, LocationUtils.currentDuelsMode!!)
                 } else {
-                    StatUtils.createStatMessage(name, LocationUtils.currentMode!!.lowercase())
+                    StatUtils.createMinimalStatMessage(name, LocationUtils.currentMode!!.lowercase())
                 }
             } catch (e: Exception) {
                 Utils.modMessage("Encountered Error on name $name: ${e.message}")
