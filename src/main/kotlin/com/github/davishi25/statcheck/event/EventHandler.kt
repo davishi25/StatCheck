@@ -47,10 +47,10 @@ object EventHandler {
             
             names.forEach { name ->
                 try {
-                    if(LocationUtils.currentMode.equals("duels")) {
+                    if(LocationUtils.currentMode.equals("DUELS")) {
                         StatUtils.createDuelsStatMessage(name, LocationUtils.currentDuelsMode!!)
                     } else {
-                        StatUtils.createStatMessage(name, LocationUtils.currentMode!!)
+                        StatUtils.createStatMessage(name, LocationUtils.currentMode!!.lowercase())
                     }
                 } catch (e: Exception) {
                     user.addChatMessage(ChatComponentText("Encountered Error on name $name: ${e.message}"))

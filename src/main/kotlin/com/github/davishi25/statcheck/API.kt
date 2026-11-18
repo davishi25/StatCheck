@@ -1,6 +1,8 @@
 package com.github.davishi25.statcheck
 
+import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.playerdata.PlayerData
+import com.github.davishi25.statcheck.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
@@ -24,6 +26,7 @@ object API {
             val playerResponse = apiResponse.getAsJsonObject("player")
             val playerData = gson.fromJson(playerResponse, PlayerData::class.java)
             recentCalls[playerName] = playerData
+            Utils.modMessage("Added key $playerName to cache!")
             return playerData
         } catch (e: Exception) {
             throw RuntimeException(e)

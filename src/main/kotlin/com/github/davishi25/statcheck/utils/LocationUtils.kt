@@ -7,11 +7,13 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
 
 object LocationUtils {
     var currentMode: String? = null
     var currentDuelsMode: String? = null
     private var awaitingLocraw = false
+    private var waitTicks = 0
     @SubscribeEvent
     fun onWorldChange(event: WorldEvent.Unload) {
         resetLocation()
@@ -21,7 +23,7 @@ object LocationUtils {
         if (event.entity != user) return
         if (awaitingLocraw) return
         awaitingLocraw = true
-        Utils.sendMessage("/locraw")
+        waitTicks = 20
     }
     @SubscribeEvent
     fun onChat(event: ClientChatReceivedEvent) {
@@ -34,9 +36,15 @@ object LocationUtils {
             currentDuelsMode = getDuelsGamemode(locraw)
         awaitingLocraw = false
         //Utils.modMessage("Detected mode: $currentMode duels mode: $currentDuelsMode")
+        waitTicks = 0
         event.isCanceled = true
     }
-
+    @SubscribeEvent
+    fun onTick(event: TickEvent.ClientTickEvent) {
+        if(!awaitingLocraw) return
+        if(waitTicks <= 0) return
+        if(--waitTicks == 0) Utils.sendMessage("/locraw")
+    }
     fun getDuelsGamemode(obj: JsonObject): String? {
         if(obj.get("mode") == null) return null
         val gamemode = obj.get("mode").asString.lowercase()
@@ -51,5 +59,6 @@ object LocationUtils {
         currentMode = null
         currentDuelsMode = null
         awaitingLocraw = false
+        waitTicks = 0
     }
 }

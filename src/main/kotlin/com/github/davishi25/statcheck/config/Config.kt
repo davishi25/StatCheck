@@ -1,4 +1,4 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.config
 
 import net.minecraftforge.common.config.Configuration
 

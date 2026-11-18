@@ -1,4 +1,4 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.commands
 
 import com.github.davishi25.statcheck.utils.Utils.user
 import com.github.davishi25.statcheck.utils.StatUtils

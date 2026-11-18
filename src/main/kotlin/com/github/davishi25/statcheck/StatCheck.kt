@@ -1,5 +1,8 @@
 package com.github.davishi25.statcheck
 
+import com.github.davishi25.statcheck.commands.ApiSetCommand
+import com.github.davishi25.statcheck.commands.CheckStatsCommand
+import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.event.EventHandler
 import com.github.davishi25.statcheck.utils.LocationUtils
 import net.minecraftforge.client.ClientCommandHandler
