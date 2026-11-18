@@ -1,4 +1,6 @@
 import org.apache.commons.lang3.SystemUtils
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     idea
@@ -52,16 +54,25 @@ repositories {
     maven("https://repo.spongepowered.org/maven/")
 }
 
-val shadowImpl: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
+// Dependencies in this configuration are:
+//  - available when compiling Kotlin/Java sources (via compileOnly),
+//  - available to the development runtime (via runtimeOnly), and
+//  - bundled only in the regular, non-dependent output JAR.
+val bundledDependencies by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
 }
+
+configurations.compileOnly.get().extendsFrom(bundledDependencies)
+configurations.runtimeOnly.get().extendsFrom(bundledDependencies)
 
 dependencies {
     minecraft("com.mojang:minecraft:1.8.9")
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
     forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
-    shadowImpl(kotlin("stdlib-jdk8"))
-    shadowImpl("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+
+    bundledDependencies(kotlin("stdlib-jdk8"))
+    bundledDependencies("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 }
 
 // Tasks:
@@ -69,12 +80,13 @@ tasks.compileJava {
     dependsOn(tasks.processResources)
 }
 
-tasks.withType(JavaCompile::class) {
+tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }
 
-tasks.withType(org.gradle.jvm.tasks.Jar::class) {
+tasks.withType<Jar>().configureEach {
     archiveBaseName.set(modid)
+    archiveVersion.set(version)
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
         this["ForceLoadAsMod"] = "true"
@@ -94,31 +106,36 @@ tasks.processResources {
     rename("accesstransformer.cfg", "META-INF/${modid}_at.cfg")
 }
 
-
-val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
-    archiveClassifier.set("")
-    from(tasks.shadowJar)
-    input.set(tasks.shadowJar.get().archiveFile)
+val remapJar by tasks.named<RemapJarTask>("remapJar") {
+    archiveBaseName.set(modid)
+    archiveClassifier.set("dependent")
+    destinationDirectory.set(layout.buildDirectory.dir("libs"))
+    input.set(tasks.jar.get().archiveFile)
 }
 
 tasks.jar {
-    archiveClassifier.set("without-deps")
+    archiveClassifier.set("dev")
     destinationDirectory.set(layout.buildDirectory.dir("intermediates"))
 }
 
-tasks.shadowJar {
-    destinationDirectory.set(layout.buildDirectory.dir("intermediates"))
-    archiveClassifier.set("non-obfuscated-with-deps")
-    configurations = listOf(shadowImpl)
+val bundledJar by tasks.registering(ShadowJar::class) {
+    dependsOn(remapJar)
+
+    archiveBaseName.set(modid)
+    archiveVersion.set(version)
+    archiveClassifier.set("")
+    destinationDirectory.set(layout.buildDirectory.dir("libs"))
+
+    from({
+        zipTree(remapJar.archiveFile.get().asFile).matching {
+            exclude("META-INF/MANIFEST.MF")
+        }
+    })
+    configurations = listOf(bundledDependencies)
 
     minimize()
-
-    doLast {
-        configurations.forEach {
-            println("Copying dependencies into mod: ${it.files}")
-        }
-    }
 }
 
-tasks.assemble.get().dependsOn(tasks.remapJar)
-
+tasks.assemble {
+    dependsOn(remapJar, bundledJar)
+}
