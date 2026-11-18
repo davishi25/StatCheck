@@ -33,14 +33,14 @@ object LocationUtils {
         if(currentMode == "DUELS")
             currentDuelsMode = getDuelsGamemode(locraw)
         awaitingLocraw = false
-        Utils.modMessage("Detected mode: $currentMode duels mode: $currentDuelsMode")
+        //Utils.modMessage("Detected mode: $currentMode duels mode: $currentDuelsMode")
         event.isCanceled = true
     }
 
     fun getDuelsGamemode(obj: JsonObject): String? {
         if(obj.get("mode") == null) return null
         val gamemode = obj.get("mode").asString.lowercase()
-        Utils.modMessage("gamemode from locraw: $gamemode")
+        //Utils.modMessage("gamemode from locraw: $gamemode")
         Utils.duelsModes.forEach { mode ->
             if(gamemode.contains(mode)) return mode
         }
