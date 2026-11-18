@@ -4,5 +4,6 @@ data class SkyWarsData(
     val wins: Int?,
     val losses: Int?,
     val kills: Int?,
-    val deaths: Int?
+    val deaths: Int?,
+    val skywars_experience: Int?
 )
