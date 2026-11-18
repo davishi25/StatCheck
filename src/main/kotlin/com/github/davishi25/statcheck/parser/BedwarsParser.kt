@@ -1,23 +1,26 @@
 package com.github.davishi25.statcheck.parser
 
 import com.github.davishi25.statcheck.Utils
-import com.google.gson.JsonObject
+import com.github.davishi25.statcheck.Utils.roundToPrecision
+import com.github.davishi25.statcheck.playerdata.StatsData
+import com.github.davishi25.statcheck.playerdata.stats.BedwarsData
 
 object BedwarsParser: ApiParser {
-    data class BedwarsContext(private val bedwarsObj: JsonObject) {
+    data class BedwarsContext(private val bedwarsData: BedwarsData) {
+        fun getWins() = bedwarsData.wins_bedwars ?: 0
+        fun getFinals() = bedwarsData.final_kills_bedwars ?: 0
+        fun getFinalDeaths() = bedwarsData.final_deaths_bedwars ?: 0
 
-        fun getWins() = bedwarsObj.get("wins_bedwars")?.asInt ?: 0
-        fun getFinals() = bedwarsObj.get("final_kills_bedwars")?.asInt ?: 0
-        fun getFinalDeaths() = bedwarsObj.get("final_deaths_bedwars")?.asInt ?: 0
         fun getFKDR(): Double {
             val deaths = getFinalDeaths()
             return getFinals().toDouble() / (if(deaths == 0) 1 else deaths).toDouble()
         }
     }
 
-    override fun getStatLine(playerObj: JsonObject): String {
-        val ctx = BedwarsContext(playerObj.getAsJsonObject("Bedwars"))
-        return "§rW: §a" + ctx.getWins() + "§r | Finals: " + ctx.getFinals() + " | FKDR: " + Utils.roundToPrecision(ctx.getFKDR(),2)
+    override fun getStatLine(statsData: StatsData?): String {
+        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        val ctx = BedwarsContext(statsData.bedwars)
+        return "§rW: §a" + ctx.getWins() + "§r | Finals: " + ctx.getFinals() + " | FKDR: " + ctx.getFKDR().roundToPrecision(2)
     }
 
     override fun toString() = "Bedwars"

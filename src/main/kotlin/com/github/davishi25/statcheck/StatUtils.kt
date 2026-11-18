@@ -3,7 +3,7 @@ package com.github.davishi25.statcheck
 import com.github.davishi25.statcheck.parser.ApiParser
 import com.github.davishi25.statcheck.parser.BridgeDuelsParser
 import com.github.davishi25.statcheck.parser.DuelsParser
-import com.google.gson.JsonObject
+import com.github.davishi25.statcheck.playerdata.StatsData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ object StatUtils {
                 ?: throw NullPointerException("Couldn't find gamemode \"$game\". Did you spell it correctly?")
             val padding = "§8----------------------------------------"
             val nameLine = Utils.getNameLine(apiResponse, parser)
-            val statLine = checkStats(apiResponse.getAsJsonObject("stats"), parser)
+            val statLine = checkStats(apiResponse.stats, parser)
 
             Utils.chat("$padding\n§8| $nameLine§8| $statLine\n$padding")
         } catch (e: Exception) {
@@ -25,11 +25,11 @@ object StatUtils {
         }
     }
 
-    fun checkStats(playerObj: JsonObject, parser: ApiParser): String = parser.getStatLine(playerObj)
+    fun checkStats(statsData: StatsData?, parser: ApiParser): String = parser.getStatLine(statsData)
 
     fun createDuelsStatMessage(player: String, duelsMode: String) = scope.launch {
         try {
-            val apiResponse = API.getAPI(player)
+            val playerData = API.getAPI(player)
             val parser = if (duelsMode == "bridge") {
                 ApiParserRegistry.parsers["bridge"]!!
             } else {
@@ -37,8 +37,9 @@ object StatUtils {
             }
 
             val padding = "§8----------------------------------------"
-            val nameLine = Utils.getFormattedName(apiResponse) + "'s " + duelsMode + " duels§r\n"
-            val statLine = checkDuelsStats(apiResponse.getAsJsonObject("stats"), parser, duelsMode)
+            val nameLine = Utils.getFormattedName(playerData) + "'s " + duelsMode + " duels§r\n"
+            val statLine =
+                checkDuelsStats(playerData.stats ?: throw Exception("Could not get stats data!"), parser, duelsMode)
 
             Utils.chat("$padding\n§8| $nameLine§8| $statLine\n$padding")
         } catch (e: Exception) {
@@ -46,9 +47,9 @@ object StatUtils {
         }
     }
 
-    fun checkDuelsStats(playerObj: JsonObject, parser: ApiParser, gamemode: String): String {
+    fun checkDuelsStats(statsData: StatsData, parser: ApiParser, gamemode: String): String {
         if (parser is BridgeDuelsParser)
-            return parser.getStatLine(playerObj)
-        return (parser as DuelsParser).getStatLine(gamemode, playerObj)
+            return parser.getStatLine(statsData)
+        return (parser as DuelsParser).getStatLine(gamemode, statsData)
     }
 }

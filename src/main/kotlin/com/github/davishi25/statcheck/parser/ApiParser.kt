@@ -1,7 +1,7 @@
 package com.github.davishi25.statcheck.parser
 
-import com.google.gson.JsonObject
+import com.github.davishi25.statcheck.playerdata.StatsData
 
 interface ApiParser {
-    fun getStatLine(playerObj: JsonObject): String
+    fun getStatLine(statsData: StatsData?): String
 }
