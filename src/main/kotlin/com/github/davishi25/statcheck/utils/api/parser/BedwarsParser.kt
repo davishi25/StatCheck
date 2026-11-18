@@ -1,9 +1,9 @@
-package com.github.davishi25.statcheck.parser
+package com.github.davishi25.statcheck.utils.api.parser
 
 import com.github.davishi25.statcheck.utils.Utils
 import com.github.davishi25.statcheck.utils.Utils.roundToPrecision
-import com.github.davishi25.statcheck.playerdata.StatsData
-import com.github.davishi25.statcheck.playerdata.stats.BedwarsData
+import com.github.davishi25.statcheck.utils.api.playerdata.StatsData
+import com.github.davishi25.statcheck.utils.api.playerdata.stats.BedwarsData
 
 object BedwarsParser: ApiParser {
     data class BedwarsContext(private val bedwarsData: BedwarsData) {

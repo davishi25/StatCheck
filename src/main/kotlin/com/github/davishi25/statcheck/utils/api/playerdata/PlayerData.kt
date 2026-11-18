@@ -1,4 +1,4 @@
-package com.github.davishi25.statcheck.playerdata
+package com.github.davishi25.statcheck.utils.api.playerdata
 
 data class PlayerData(
     val displayname: String,

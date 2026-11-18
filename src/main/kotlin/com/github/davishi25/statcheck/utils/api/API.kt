@@ -1,7 +1,7 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.utils.api
 
 import com.github.davishi25.statcheck.config.Config
-import com.github.davishi25.statcheck.playerdata.PlayerData
+import com.github.davishi25.statcheck.utils.api.playerdata.PlayerData
 import com.google.gson.Gson
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject

@@ -1,6 +1,6 @@
-package com.github.davishi25.statcheck
+package com.github.davishi25.statcheck.utils.api
 
-import com.github.davishi25.statcheck.parser.*
+import com.github.davishi25.statcheck.utils.api.parser.*
 
 object ApiParserRegistry {
     val parsers = mutableMapOf<String,ApiParser>()

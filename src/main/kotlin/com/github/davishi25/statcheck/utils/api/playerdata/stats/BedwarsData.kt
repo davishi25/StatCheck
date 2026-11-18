@@ -1,4 +1,4 @@
-package com.github.davishi25.statcheck.playerdata.stats
+package com.github.davishi25.statcheck.utils.api.playerdata.stats
 
 data class BedwarsData(
     val Experience: Int?,
