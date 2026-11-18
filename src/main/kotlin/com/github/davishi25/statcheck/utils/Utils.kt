@@ -52,7 +52,8 @@ object Utils {
         "op",
         "parkour",
         "quake",
-        "potion"
+        "potion",
+        "classic"
     )
 
     fun chat(msg: String?) = user.addChatMessage(ChatComponentText(msg))
