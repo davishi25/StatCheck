@@ -11,8 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
 
 object LocationUtils {
-    var currentMode: String? = null
-    var currentDuelsMode: String? = null
+    var gametype: String? = null
+    var mode: String? = null
     private var awaitingLocraw = false
     private var waitTicks = 0
     @SubscribeEvent
@@ -32,13 +32,12 @@ object LocationUtils {
         val message = event.message.unformattedText
         if (!message.startsWith('{')) return
         val locraw = JsonParser().parse(message).asJsonObject
-        currentMode = locraw["gametype"]?.asString
-        if(currentMode == "DUELS")
-            currentDuelsMode = getDuelsGamemode(locraw)
+        gametype = locraw["gametype"]?.asString
+        mode = locraw["mode"]?.asString
         awaitingLocraw = false
         if (Config.debugMode) {
             Utils.modMessage("raw locraw: $message")
-            Utils.modMessage("Detected mode: $currentMode duels mode: $currentDuelsMode")
+            Utils.modMessage("Detected mode: $gametype duels mode: $mode")
         }
         waitTicks = 0
         event.isCanceled = true
@@ -49,18 +48,18 @@ object LocationUtils {
         if(waitTicks <= 0) return
         if(--waitTicks == 0) Utils.sendMessage("/locraw")
     }
-    fun getDuelsGamemode(obj: JsonObject): String? {
-        if(obj.get("mode") == null) return null
-        val gamemode = obj.get("mode").asString.lowercase()
-        Utils.duelsModes.forEach { mode ->
-            if(gamemode.contains(mode)) return mode
+    fun getDuelsGamemode(): String? {
+        mode ?: return null
+        val gamemode = mode!!.lowercase()
+        Utils.duelsModes.forEach { duelMode ->
+            if(gamemode.contains(duelMode)) return duelMode
         }
         return null
     }
 
     fun resetLocation() {
-        currentMode = null
-        currentDuelsMode = null
+        gametype = null
+        mode = null
         awaitingLocraw = false
         waitTicks = 0
     }
