@@ -13,6 +13,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent
 object LocationUtils {
     var gametype: String? = null
     var mode: String? = null
+    val inGame: Boolean get() = mode != null
+
     private var awaitingLocraw = false
     private var waitTicks = 0
     @SubscribeEvent
@@ -24,7 +26,7 @@ object LocationUtils {
         if (event.entity != user) return
         if (awaitingLocraw) return
         awaitingLocraw = true
-        waitTicks = 20
+        waitTicks = 5
     }
     @SubscribeEvent
     fun onChat(event: ClientChatReceivedEvent) {
@@ -37,7 +39,7 @@ object LocationUtils {
         awaitingLocraw = false
         if (Config.debugMode) {
             Utils.modMessage("raw locraw: $message")
-            Utils.modMessage("Detected mode: $gametype duels mode: $mode")
+            Utils.modMessage("Detected mode: $gametype, duels mode: $mode, in game: $inGame")
         }
         waitTicks = 0
         event.isCanceled = true

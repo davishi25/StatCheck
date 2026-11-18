@@ -2,26 +2,24 @@ package com.github.davishi25.statcheck.features
 
 import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.event.GameStartEvent
+import com.github.davishi25.statcheck.event.UserJoinEvent
 import com.github.davishi25.statcheck.utils.LocationUtils
 import com.github.davishi25.statcheck.utils.StatUtils
+import com.github.davishi25.statcheck.utils.TablistUtils
 import com.github.davishi25.statcheck.utils.Utils
-import com.github.davishi25.statcheck.utils.Utils.mc
-import com.github.davishi25.statcheck.utils.Utils.user
+import net.minecraftforge.client.event.ClientChatReceivedEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 object AutoStatCheck {
+    private val obfuscatedGames = listOf("DUELS","BEDWARS")
+    private val joinRegex = Regex("^(\\w+)\\s+has joined")
+
     @SubscribeEvent
     fun onGameStart(event: GameStartEvent) {
-        val tablist = mc.netHandler.playerInfoMap
-        val names = mutableSetOf<String>()
-        tablist.forEach { playerInfo ->
-            val name = playerInfo.gameProfile.name
-            if (name == user.name) return@forEach
-            // NPCs do not have a team
-            playerInfo?.playerTeam?.teamName ?: return@forEach
-            names.add(name)
-        }
+        event.gametype ?: return
+        if (event.gametype !in obfuscatedGames) return
 
+        val names = TablistUtils.getNames()
         if (Config.debugMode) Utils.modMessage("Detected names: $names")
 
         names.forEach { name ->
@@ -34,6 +32,35 @@ object AutoStatCheck {
             } catch (e: Exception) {
                 Utils.modMessage("Encountered Error on name $name: ${e.message}")
             }
+        }
+    }
+
+    @SubscribeEvent
+    fun onUserJoin(event: UserJoinEvent) {
+        if(!LocationUtils.inGame) return
+        if (LocationUtils.gametype in obfuscatedGames) return
+        val names = TablistUtils.getNames()
+        names.forEach { name ->
+            try {
+                StatUtils.createMinimalStatMessage(name, LocationUtils.gametype!!.lowercase())
+            } catch (e: Exception) {
+                Utils.modMessage("Encountered Error on name $name: ${e.message}")
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onChat(event: ClientChatReceivedEvent) {
+        if(!LocationUtils.inGame) return
+        if(LocationUtils.gametype in obfuscatedGames) return
+        val msg = event.message.unformattedText
+        val match = joinRegex.find(msg)
+        match ?: return
+        val username = match.groups[1]?.value ?: return
+        try {
+            StatUtils.createMinimalStatMessage(username, LocationUtils.gametype!!.lowercase())
+        } catch (e: Exception) {
+            Utils.modMessage("Encountered Error on name $username: ${e.message}")
         }
     }
 }

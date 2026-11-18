@@ -30,14 +30,13 @@ object StatUtils {
     fun createMinimalStatMessage(player: String, game: String) = scope.launch {
         try {
             val playerData = API.getAPI(player)
-            val parser = ApiParserRegistry.parsers[game]
-                ?: throw NullPointerException("Couldn't find gamemode \"$game\". Did you spell it correctly?")
+            val parser = ApiParserRegistry.parsers[game] ?: return@launch
             val formattedName = Utils.getFormattedName(playerData)
             val statLine = checkVitalStats(playerData.stats, parser)
 
-            Utils.chat("$formattedName §8| $statLine")
+            Utils.modMessage("$formattedName §8| $statLine")
         } catch (e: Exception) {
-            Utils.modMessage(e.message)
+            Utils.modMessage(e.message?.substringAfter(": "))
         }
     }
 
