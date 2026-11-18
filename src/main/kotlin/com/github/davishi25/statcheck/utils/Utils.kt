@@ -58,6 +58,8 @@ object Utils {
     fun chat(msg: String?) = user.addChatMessage(ChatComponentText(msg))
     fun modMessage(msg: String?) = chat("§6[SC] §r$msg")
 
+    fun sendMessage(msg: String) = user.sendChatMessage(msg)
+
     fun getFormattedName(name: String): String = getFormattedName(API.getAPI(name))
 
     fun getFormattedName(playerData: PlayerData): String {

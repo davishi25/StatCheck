@@ -29,7 +29,7 @@ object StatUtils {
 
     fun checkStats(statsData: StatsData?, parser: ApiParser): String = parser.getStatLine(statsData)
 
-    fun createDuelsStatMessage(player: String, duelsMode: String) = scope.launch {
+    fun createDuelsStatMessage(player: String, duelsMode: String?) = scope.launch {
         try {
             val playerData = API.getAPI(player)
             val parser = if (duelsMode == "bridge") {
@@ -49,7 +49,7 @@ object StatUtils {
         }
     }
 
-    fun checkDuelsStats(statsData: StatsData, parser: ApiParser, gamemode: String): String {
+    fun checkDuelsStats(statsData: StatsData, parser: ApiParser, gamemode: String?): String {
         if (parser is BridgeDuelsParser)
             return parser.getStatLine(statsData)
         return (parser as DuelsParser).getStatLine(gamemode, statsData)

@@ -7,18 +7,18 @@ import com.github.davishi25.statcheck.playerdata.StatsData
 import com.github.davishi25.statcheck.playerdata.stats.DuelsData
 
 object DuelsParser : ApiParser {
-    open class DuelsContext(private val gamemode: String, private val duelsData: DuelsData) {
+    open class DuelsContext(private val gamemode: String?, private val duelsData: DuelsData) {
         fun getDuelsData() = duelsData
 
         open fun getWins(): Int {
-            if (gamemode.isEmpty()) return duelsData.wins ?: 0
+            gamemode ?: return duelsData.wins ?: 0
             return getWins("duel") + getWins("doubles") + getWins("threes") + getWins("four")
         }
 
         fun getWins(mode: String): Int = (duelsData.getPropertyByName("${gamemode}_${mode}_wins") as Int?) ?: 0
 
         open fun getLosses(): Int {
-            if (gamemode.isEmpty()) return duelsData.losses ?: 0
+            gamemode ?: return duelsData.losses ?: 0
             return getLosses("duel") + getLosses("doubles") + getLosses("threes") + getLosses("four")
         }
 
@@ -30,8 +30,8 @@ object DuelsParser : ApiParser {
         }
     }
 
-    override fun getStatLine(statsData: StatsData?) = getStatLine("", statsData)
-    fun getStatLine(gamemode: String, statsData: StatsData?): String {
+    override fun getStatLine(statsData: StatsData?) = getStatLine(null, statsData)
+    fun getStatLine(gamemode: String?, statsData: StatsData?): String {
         statsData ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = DuelsContext(gamemode, statsData.duels)
         return "§rW: §a${ctx.getWins()}§r | L: §c${ctx.getLosses()}§r | WLR: ${ctx.getWLR().roundToPrecision(2)}"
