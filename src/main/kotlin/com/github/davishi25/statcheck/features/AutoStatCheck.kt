@@ -1,5 +1,6 @@
 package com.github.davishi25.statcheck.features
 
+import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.event.GameStartEvent
 import com.github.davishi25.statcheck.utils.LocationUtils
 import com.github.davishi25.statcheck.utils.StatUtils
@@ -20,6 +21,8 @@ object AutoStatCheck {
             playerInfo?.playerTeam?.teamName ?: return@forEach
             names.add(name)
         }
+
+        if (Config.debugMode) Utils.modMessage("Detected names: $names")
 
         names.forEach { name ->
             try {

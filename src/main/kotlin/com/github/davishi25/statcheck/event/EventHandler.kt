@@ -1,5 +1,7 @@
 package com.github.davishi25.statcheck.event
 
+import com.github.davishi25.statcheck.config.Config
+import com.github.davishi25.statcheck.utils.Utils
 import net.minecraftforge.client.event.ClientChatReceivedEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.world.WorldEvent
@@ -31,6 +33,7 @@ object EventHandler {
             statTick --
         } else if (statTick == 0) {
             MinecraftForge.EVENT_BUS.post(GameStartEvent())
+            if (Config.debugMode) Utils.modMessage("Detected Game Start!")
             statTick = -1
         }
     }

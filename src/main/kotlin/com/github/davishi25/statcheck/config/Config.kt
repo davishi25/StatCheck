@@ -6,6 +6,7 @@ import java.io.File
 
 object Config {
     var apiKey: String? = null
+    var debugMode: Boolean = false
     var config: Configuration? = null
     //categories
     const val CATEGORY_GENERAL = "general"
@@ -36,6 +37,12 @@ object Config {
                     CATEGORY_GENERAL,
                     "",
                     "Your personal API key"
+                )
+                debugMode = cfg.getBoolean(
+                    "debugMode",
+                    CATEGORY_GENERAL,
+                    false,
+                    "Enables debug messages"
                 )
             } catch(e: Exception) {
                 println("couldn't load mod config")

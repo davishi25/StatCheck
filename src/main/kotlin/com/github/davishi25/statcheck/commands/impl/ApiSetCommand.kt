@@ -1,4 +1,4 @@
-package com.github.davishi25.statcheck.commands
+package com.github.davishi25.statcheck.commands.impl
 
 import com.github.davishi25.statcheck.API
 import com.github.davishi25.statcheck.config.Config
@@ -6,7 +6,7 @@ import com.github.davishi25.statcheck.utils.Utils
 import net.minecraft.command.CommandBase
 import net.minecraft.command.ICommandSender
 
-class ApiSetCommand: CommandBase() {
+object ApiSetCommand: CommandBase() {
     override fun getCommandName() = "api"
 
     override fun getCommandUsage(sender: ICommandSender) = ""

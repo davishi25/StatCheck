@@ -1,5 +1,6 @@
 package com.github.davishi25.statcheck.utils
 
+import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.utils.Utils.user
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -35,7 +36,10 @@ object LocationUtils {
         if(currentMode == "DUELS")
             currentDuelsMode = getDuelsGamemode(locraw)
         awaitingLocraw = false
-        //Utils.modMessage("Detected mode: $currentMode duels mode: $currentDuelsMode")
+        if (Config.debugMode) {
+            Utils.modMessage("raw locraw: $message")
+            Utils.modMessage("Detected mode: $currentMode duels mode: $currentDuelsMode")
+        }
         waitTicks = 0
         event.isCanceled = true
     }
@@ -48,7 +52,6 @@ object LocationUtils {
     fun getDuelsGamemode(obj: JsonObject): String? {
         if(obj.get("mode") == null) return null
         val gamemode = obj.get("mode").asString.lowercase()
-        //Utils.modMessage("gamemode from locraw: $gamemode")
         Utils.duelsModes.forEach { mode ->
             if(gamemode.contains(mode)) return mode
         }

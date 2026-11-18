@@ -1,4 +1,4 @@
-package com.github.davishi25.statcheck.commands
+package com.github.davishi25.statcheck.commands.impl
 
 import com.github.davishi25.statcheck.utils.Utils.user
 import com.github.davishi25.statcheck.utils.StatUtils
@@ -7,7 +7,7 @@ import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
 
-class CheckStatsCommand: CommandBase() {
+object CheckStatsCommand: CommandBase() {
 
     override fun getCommandName(): String = "sc"
 
