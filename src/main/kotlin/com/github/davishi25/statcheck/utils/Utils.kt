@@ -64,7 +64,7 @@ object Utils {
 
     fun getFormattedName(playerData: PlayerData): String {
         val username = playerData.displayname
-        val rank = playerData.newPackageRank
+        val rank = playerData.newPackageRank ?: playerData.packageRank
         val rankColor = playerData.rankPlusColor
         val isMVPPlusPlus = playerData.monthlyPackageRank != null && playerData.monthlyPackageRank != "NONE"
         val prefix = when {
@@ -90,7 +90,8 @@ object Utils {
         return (((this * scale).toInt()).toDouble()) / scale
     }
 
-    fun String.stripColorCodes(): String = replace("§.", "")
+    val colorCodeRegex = Regex("§.")
+    fun String.stripColorCodes(): String = replace(colorCodeRegex, "")
 
     fun Any.getPropertyByName(variableName: String): Any? {
         return try {
