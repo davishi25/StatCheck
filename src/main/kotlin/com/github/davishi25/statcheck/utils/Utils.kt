@@ -78,8 +78,9 @@ object Utils {
             rank != null && ranks.containsKey(rank) -> ranks[rank]!!
             else -> "§7"
         }
+        val spacing = if (prefix == "§7") "" else " "
 
-        return "$prefix $username§r"
+        return "$prefix$spacing$username§r"
     }
 
     fun getNameLine(playerData: PlayerData, game: ApiParser): String = "${getFormattedName(playerData)}'s §r${game}\n"
