@@ -2,7 +2,13 @@
 StatCheck is a simple stat checking mod for Hypixel.
 ## Usage
 ```/sc <username> <gamemode>```
-- currently supports bedwars, bridge, and duels
+- currently supports bedwars, bridge, duels, and skywars
+
+```/rq```
+- requeues you
+
+```/scdebug```
+- toggles debug messages
 ---
 ## API
 - go to https://dev.hypixel.net and generate an api key
