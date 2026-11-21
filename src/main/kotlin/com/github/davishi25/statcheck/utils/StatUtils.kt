@@ -6,6 +6,7 @@ import com.github.davishi25.statcheck.api.parser.ApiParser
 import com.github.davishi25.statcheck.api.parser.BridgeDuelsParser
 import com.github.davishi25.statcheck.api.parser.DuelsParser
 import com.github.davishi25.statcheck.api.playerdata.StatsData
+import com.github.davishi25.statcheck.utils.Utils.user
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,6 +47,7 @@ object StatUtils {
     fun createDuelsStatMessage(player: String, duelsMode: String?) = scope.launch {
         try {
             val playerData = API.getAPI(player)
+            if (player == user.name) return@launch
             val parser = if (duelsMode == "bridge") {
                 ApiParserRegistry.getParser("bridge")!!
             } else {

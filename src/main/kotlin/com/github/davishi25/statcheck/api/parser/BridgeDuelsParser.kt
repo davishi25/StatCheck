@@ -16,7 +16,7 @@ object BridgeDuelsParser: ApiParser{
     override fun getStatLine(statsData: StatsData?): String {
         statsData ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = BridgeDuelsContext(statsData.duels)
-        return "§rW: §a" + ctx.getWins() + "§r | L: §c" + ctx.getLosses() + "§r | WLR: " + ctx.getWLR().roundToPrecision(2)
+        return "§aW: §r${ctx.getWins()} §8| §cL: §r${ctx.getLosses()} §8| §bWLR: §r${ctx.getWLR().roundToPrecision(2)}"
     }
     override fun getVitalStatLine(statsData: StatsData?): String = getStatLine(statsData)
 
