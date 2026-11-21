@@ -3,10 +3,9 @@ package com.github.davishi25.statcheck.event
 import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.utils.LocationUtils
 import com.github.davishi25.statcheck.utils.Utils
-import com.github.davishi25.statcheck.utils.Utils.user
+import com.github.davishi25.statcheck.utils.Utils.mc
 import net.minecraftforge.client.event.ClientChatReceivedEvent
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
@@ -15,7 +14,7 @@ object EventHandler {
     private var newWorld = false
     private var isGameStarting = false
     private var statTick = -1
-    private var joinTick = -1
+    private var hasLoaded = false
 
     @SubscribeEvent
     fun onChat(event: ClientChatReceivedEvent) {
@@ -31,7 +30,7 @@ object EventHandler {
     }
 
     @SubscribeEvent
-    fun onTick(event: TickEvent.ClientTickEvent) {
+    fun onTickStart(event: TickEvent.ClientTickEvent) {
         if (event.phase != TickEvent.Phase.START) return
         if (statTick > 0) {
             statTick --
@@ -40,24 +39,23 @@ object EventHandler {
             if (Config.debugMode) Utils.modMessage("Detected Game Start!")
             statTick = -1
         }
-        if (joinTick > 0) {
-            joinTick --
-        } else if (joinTick == 0) {
-            MinecraftForge.EVENT_BUS.post(UserJoinEvent())
-            if (Config.debugMode) Utils.modMessage("Detected User Join!")
-            joinTick = -1
-        }
+    }
+
+    @SubscribeEvent
+    fun onTickEnd(event: TickEvent.ClientTickEvent) {
+        if (event.phase != TickEvent.Phase.END) return
+        if (hasLoaded) return
+        mc.thePlayer ?: return
+        mc.theWorld ?: return
+        MinecraftForge.EVENT_BUS.post(UserJoinEvent())
+        if (Config.debugMode) Utils.modMessage("Detected User Join!")
+        hasLoaded = true
     }
 
     @SubscribeEvent
     fun onWorldChange(event: WorldEvent.Unload) {
         newWorld = true
         isGameStarting = false
-    }
-
-    @SubscribeEvent
-    fun onEntityJoin(event: EntityJoinWorldEvent) {
-        if (event.entity != user) return
-        joinTick = 10 // assume player loads in within 10t
+        hasLoaded = false
     }
 }

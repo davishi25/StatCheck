@@ -1,11 +1,10 @@
 package com.github.davishi25.statcheck.utils
 
 import com.github.davishi25.statcheck.config.Config
-import com.github.davishi25.statcheck.utils.Utils.user
-import com.google.gson.JsonObject
+import com.github.davishi25.statcheck.event.UserJoinEvent
+import com.github.davishi25.statcheck.utils.Utils.mc
 import com.google.gson.JsonParser
 import net.minecraftforge.client.event.ClientChatReceivedEvent
-import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
@@ -14,6 +13,7 @@ object LocationUtils {
     var gametype: String? = null
     var mode: String? = null
     val inGame: Boolean get() = mode != null
+    val isOnHypixel: Boolean get() = mc.currentServerData?.serverIP?.contains("hypixel") ?: false
 
     private var awaitingLocraw = false
     private var waitTicks = 0
@@ -22,8 +22,8 @@ object LocationUtils {
         resetLocation()
     }
     @SubscribeEvent
-    fun onEntityJoin(event: EntityJoinWorldEvent) {
-        if (event.entity != user) return
+    fun onUserJoin(event: UserJoinEvent) {
+        if (!isOnHypixel) return
         if (awaitingLocraw) return
         awaitingLocraw = true
         waitTicks = 5
