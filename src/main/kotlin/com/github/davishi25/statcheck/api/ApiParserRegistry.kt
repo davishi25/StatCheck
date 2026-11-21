@@ -1,6 +1,7 @@
 package com.github.davishi25.statcheck.api
 
 import com.github.davishi25.statcheck.api.parser.*
+import com.github.davishi25.statcheck.utils.location.LocationUtils
 
 object ApiParserRegistry {
     private val parsers = mutableMapOf<String,ApiParser>()
@@ -15,5 +16,8 @@ object ApiParserRegistry {
             parsers[alias] = parser
         }
     }
-    fun getParser(key: String): ApiParser? = parsers[key]
+    fun getParser(key: String): ApiParser? {
+        if (parsers[key] is DuelsParser && LocationUtils.getDuelsGamemode() == "bridge") return BridgeDuelsParser
+        return parsers[key]
+    }
 }
