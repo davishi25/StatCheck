@@ -2,7 +2,7 @@ package com.github.davishi25.statcheck.features
 
 import com.github.davishi25.statcheck.api.API
 import com.github.davishi25.statcheck.api.ApiParserRegistry
-import com.github.davishi25.statcheck.utils.LocationUtils
+import com.github.davishi25.statcheck.utils.location.LocationUtils
 import com.github.davishi25.statcheck.utils.StatUtils
 import com.github.davishi25.statcheck.utils.TablistUtils
 import com.github.davishi25.statcheck.utils.Utils

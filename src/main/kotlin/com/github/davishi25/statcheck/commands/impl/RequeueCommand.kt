@@ -1,7 +1,7 @@
 package com.github.davishi25.statcheck.commands.impl
 
 import com.github.davishi25.statcheck.config.Config
-import com.github.davishi25.statcheck.utils.LocationUtils
+import com.github.davishi25.statcheck.utils.location.LocationUtils
 import com.github.davishi25.statcheck.utils.Utils
 import net.minecraft.command.CommandBase
 import net.minecraft.command.ICommandSender

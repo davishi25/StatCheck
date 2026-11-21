@@ -1,9 +1,13 @@
-package com.github.davishi25.statcheck.utils
+package com.github.davishi25.statcheck.utils.location
 
 import com.github.davishi25.statcheck.config.Config
-import com.github.davishi25.statcheck.event.LocrawUpdateEvent
-import com.github.davishi25.statcheck.event.UserJoinEvent
-import com.github.davishi25.statcheck.utils.Utils.mc
+import com.github.davishi25.statcheck.event.impl.LocrawUpdateEvent
+import com.github.davishi25.statcheck.event.impl.UserJoinEvent
+import com.github.davishi25.statcheck.utils.Utils
+import com.github.davishi25.statcheck.utils.location.LocationUtils.gametype
+import com.github.davishi25.statcheck.utils.location.LocationUtils.inGame
+import com.github.davishi25.statcheck.utils.location.LocationUtils.isOnHypixel
+import com.github.davishi25.statcheck.utils.location.LocationUtils.mode
 import com.google.gson.JsonParser
 import net.minecraftforge.client.event.ClientChatReceivedEvent
 import net.minecraftforge.common.MinecraftForge
@@ -11,19 +15,12 @@ import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
 
-//TODO: refactor into helpers, utils should not interact with the event bus...
-object LocationUtils {
-    var gametype: String? = null
-    var mode: String? = null
-    val inGame: Boolean get() = mode != null
-    val isOnHypixel: Boolean get() = mc.currentServerData?.serverIP?.contains("hypixel") ?: false
-
+object LocationHelper {
     private var awaitingLocraw = false
     private var waitTicks = 0
     @SubscribeEvent
-    fun onWorldChange(event: WorldEvent.Unload) {
-        resetLocation()
-    }
+    fun onWorldChange(event: WorldEvent.Unload) = resetLocation()
+
     @SubscribeEvent
     fun onUserJoin(event: UserJoinEvent) {
         if (!isOnHypixel) return
@@ -31,6 +28,7 @@ object LocationUtils {
         awaitingLocraw = true
         waitTicks = 5
     }
+
     @SubscribeEvent
     fun onChat(event: ClientChatReceivedEvent) {
         if (!awaitingLocraw) return
@@ -50,19 +48,10 @@ object LocationUtils {
     }
     @SubscribeEvent
     fun onTick(event: TickEvent.ClientTickEvent) {
-        if(!awaitingLocraw) return
-        if(waitTicks <= 0) return
-        if(--waitTicks == 0) Utils.sendMessage("/locraw")
+        if (!awaitingLocraw) return
+        if (waitTicks <= 0) return
+        if (--waitTicks == 0) Utils.sendMessage("/locraw")
     }
-    fun getDuelsGamemode(): String? {
-        mode ?: return null
-        val gamemode = mode!!.lowercase()
-        Utils.duelsModes.forEach { duelMode ->
-            if(gamemode.contains(duelMode)) return duelMode
-        }
-        return null
-    }
-
     fun resetLocation() {
         gametype = null
         mode = null

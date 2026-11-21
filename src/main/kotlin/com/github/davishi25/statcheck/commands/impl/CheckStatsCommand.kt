@@ -13,7 +13,6 @@ object CheckStatsCommand: CommandBase() {
 
     override fun getCommandUsage(sender: ICommandSender) = ""
 
-    @Throws(CommandException::class)
     override fun processCommand(sender: ICommandSender, args: Array<String>) {
         when (args.size) {
             0 -> StatUtils.createStatMessage(user.name,"")

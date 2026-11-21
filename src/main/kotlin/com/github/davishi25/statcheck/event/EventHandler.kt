@@ -1,7 +1,9 @@
 package com.github.davishi25.statcheck.event
 
 import com.github.davishi25.statcheck.config.Config
-import com.github.davishi25.statcheck.utils.LocationUtils
+import com.github.davishi25.statcheck.event.impl.GameStartEvent
+import com.github.davishi25.statcheck.event.impl.UserJoinEvent
+import com.github.davishi25.statcheck.utils.location.LocationUtils
 import com.github.davishi25.statcheck.utils.Utils
 import com.github.davishi25.statcheck.utils.Utils.mc
 import net.minecraftforge.client.event.ClientChatReceivedEvent

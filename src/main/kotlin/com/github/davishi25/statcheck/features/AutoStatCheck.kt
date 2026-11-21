@@ -1,9 +1,9 @@
 package com.github.davishi25.statcheck.features
 
 import com.github.davishi25.statcheck.config.Config
-import com.github.davishi25.statcheck.event.GameStartEvent
-import com.github.davishi25.statcheck.event.LocrawUpdateEvent
-import com.github.davishi25.statcheck.utils.LocationUtils
+import com.github.davishi25.statcheck.event.impl.GameStartEvent
+import com.github.davishi25.statcheck.event.impl.LocrawUpdateEvent
+import com.github.davishi25.statcheck.utils.location.LocationUtils
 import com.github.davishi25.statcheck.utils.StatUtils
 import com.github.davishi25.statcheck.utils.TablistUtils
 import com.github.davishi25.statcheck.utils.Utils
