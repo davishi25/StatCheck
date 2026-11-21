@@ -22,7 +22,7 @@ object AutoStatCheck {
         event.gametype ?: return
         if (event.gametype !in obfuscatedGames) return
 
-        val names = TablistUtils.getNames()
+        val names = TablistUtils.getNames(includeSelf = true)
         if (Config.debugMode) Utils.modMessage("Detected names: $names")
 
         names.forEach { name ->
@@ -43,7 +43,7 @@ object AutoStatCheck {
         if (!LocationUtils.isOnHypixel) return
         if (!LocationUtils.inGame) return
         if (LocationUtils.gametype in obfuscatedGames) return
-        val names = TablistUtils.getNames()
+        val names = TablistUtils.getNames(includeSelf = true)
         if (Config.debugMode) Utils.chat(names.toString())
         names.forEach { name ->
             if (name in checkedUsers) return@forEach
