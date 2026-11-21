@@ -74,7 +74,7 @@ object BedwarsParser: ApiParser {
         level < 800 -> "§d$prefix"
         level < 900 -> "§9$prefix"
         level < 1000 -> "§5$prefix"
-        else -> "§c${prefix[0]}§6${prefix[1]}§e${prefix[2]}§a${prefix[3]}§b${prefix[4]}§d${prefix[5]}§5${prefix.drop(5)}"
+        else -> "§c${prefix[0]}§6${prefix[1]}§e${prefix[2]}§a${prefix[3]}§b${prefix[4]}§d${prefix[5]}§5${prefix.drop(6)}"
     }
 
     override fun toString() = "Bedwars"
