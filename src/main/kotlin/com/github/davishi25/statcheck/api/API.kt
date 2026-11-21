@@ -9,10 +9,11 @@ import com.google.gson.JsonObject
 import java.io.InputStreamReader
 import java.net.URL
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.ConcurrentHashMap
 
 object API {
     private val gson = Gson()
-    private val recentCalls = mutableMapOf<String, PlayerData>()
+    private val recentCalls = ConcurrentHashMap<String, PlayerData>()
 
     fun getAPI(playerName: String): PlayerData {
         val name = playerName.lowercase()
