@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 
-@Mod(modid = "statcheck", useMetadata=true)
+@Mod(modid = "statcheck", version = "1.1.2", useMetadata=true)
 class StatCheck {
     @Mod.EventHandler
     fun init(event: FMLInitializationEvent ) {
