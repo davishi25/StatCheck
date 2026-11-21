@@ -3,7 +3,7 @@ package com.github.davishi25.statcheck.api
 import com.github.davishi25.statcheck.api.parser.*
 
 object ApiParserRegistry {
-    val parsers = mutableMapOf<String,ApiParser>()
+    private val parsers = mutableMapOf<String,ApiParser>()
     init {
         register(BedwarsParser,"bw","bedwars")
         register(DuelsParser,"d","duels")
@@ -15,4 +15,5 @@ object ApiParserRegistry {
             parsers[alias] = parser
         }
     }
+    fun getParser(key: String): ApiParser? = parsers[key]
 }

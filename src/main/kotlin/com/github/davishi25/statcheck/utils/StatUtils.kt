@@ -15,7 +15,7 @@ object StatUtils {
     fun createStatMessage(player: String, game: String) = scope.launch {
         try {
             val apiResponse = API.getAPI(player)
-            val parser = ApiParserRegistry.parsers[game]
+            val parser = ApiParserRegistry.getParser(game)
                 ?: throw NullPointerException("Couldn't find gamemode \"$game\". Did you spell it correctly?")
             val padding = "§8----------------------------------------"
             val nameLine = Utils.getNameLine(apiResponse, parser)
@@ -30,7 +30,7 @@ object StatUtils {
     fun createMinimalStatMessage(player: String, game: String) = scope.launch {
         try {
             val playerData = API.getAPI(player)
-            val parser = ApiParserRegistry.parsers[game] ?: return@launch
+            val parser = ApiParserRegistry.getParser(game) ?: return@launch
             val formattedName = Utils.getFormattedName(playerData)
             val statLine = checkVitalStats(playerData.stats, parser)
 
@@ -47,9 +47,9 @@ object StatUtils {
         try {
             val playerData = API.getAPI(player)
             val parser = if (duelsMode == "bridge") {
-                ApiParserRegistry.parsers["bridge"]!!
+                ApiParserRegistry.getParser("bridge")!!
             } else {
-                ApiParserRegistry.parsers["duels"]!!
+                ApiParserRegistry.getParser("duels")!!
             }
 
             val padding = "§8----------------------------------------"
