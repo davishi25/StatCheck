@@ -4,6 +4,7 @@ import com.github.davishi25.statcheck.commands.Commands
 import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.event.EventHandler
 import com.github.davishi25.statcheck.features.AutoStatCheck
+import com.github.davishi25.statcheck.features.TabStats
 import com.github.davishi25.statcheck.utils.LocationUtils
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
@@ -17,6 +18,7 @@ class StatCheck {
         MinecraftForge.EVENT_BUS.register(EventHandler)
         MinecraftForge.EVENT_BUS.register(LocationUtils)
         MinecraftForge.EVENT_BUS.register(AutoStatCheck)
+        MinecraftForge.EVENT_BUS.register(TabStats)
         MinecraftForge.EVENT_BUS.register(this)
 
         Commands.registerCommands()
