@@ -21,6 +21,10 @@ object TabStats {
         TablistUtils.tablist.forEach { info ->
             info ?: return@forEach
             val name = info.gameProfile?.name ?: return@forEach
+            val teamComponent = if (LocationUtils.gametype == "BEDWARS") {
+                info.playerTeam?.colorPrefix ?: return@forEach
+            } else ""
+
             val cachedData = API.getRecentCalls()[name.lowercase()]
             val formattedName = if (cachedData != null) {
                 Utils.getFormattedName(cachedData)
@@ -34,7 +38,7 @@ object TabStats {
                 else "§8(§7Fetching...§8)"
             }
 
-            val displayComponent = ChatComponentText(formattedName)
+            val displayComponent = ChatComponentText("$teamComponent$formattedName")
             info.displayName = displayComponent.appendText(" $statComponent")
         }
     }
