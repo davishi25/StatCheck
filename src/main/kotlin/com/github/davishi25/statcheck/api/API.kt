@@ -24,7 +24,7 @@ object API {
 
             val apiResponse = gson.fromJson(reader, JsonObject::class.java)
             if (apiResponse.get("player") is JsonNull) {
-                potentialNicks.add(playerName)
+                potentialNicks.add(name)
                 throw Exception("§c$playerName does not exist. Are they nicked?")
             }
             val playerResponse = apiResponse.getAsJsonObject("player")
