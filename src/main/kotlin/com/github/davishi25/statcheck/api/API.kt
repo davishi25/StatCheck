@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 object API {
     private val gson = Gson()
     private val recentCalls = ConcurrentHashMap<String, PlayerData>()
-
+    private val potentialNicks = ConcurrentHashMap.newKeySet<String>()
     fun getAPI(playerName: String): PlayerData {
         val name = playerName.lowercase()
         if (recentCalls.containsKey(name)) return recentCalls[name]!!
@@ -23,7 +23,10 @@ object API {
             val reader = InputStreamReader(url.openStream(), StandardCharsets.UTF_8)
 
             val apiResponse = gson.fromJson(reader, JsonObject::class.java)
-            if (apiResponse.get("player") is JsonNull) throw Exception("§c$playerName does not exist. Are they nicked?")
+            if (apiResponse.get("player") is JsonNull) {
+                potentialNicks.add(playerName)
+                throw Exception("§c$playerName does not exist. Are they nicked?")
+            }
             val playerResponse = apiResponse.getAsJsonObject("player")
             val playerData = gson.fromJson(playerResponse, PlayerData::class.java)
             recentCalls[name] = playerData
@@ -34,4 +37,5 @@ object API {
     }
 
     fun getRecentCalls() = recentCalls
+    fun getNicks(): ConcurrentHashMap.KeySetView<String, Boolean> = potentialNicks
 }
