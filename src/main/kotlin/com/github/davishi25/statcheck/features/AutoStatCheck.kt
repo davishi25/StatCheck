@@ -2,7 +2,7 @@ package com.github.davishi25.statcheck.features
 
 import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.event.GameStartEvent
-import com.github.davishi25.statcheck.event.UserJoinEvent
+import com.github.davishi25.statcheck.event.LocrawUpdateEvent
 import com.github.davishi25.statcheck.utils.LocationUtils
 import com.github.davishi25.statcheck.utils.StatUtils
 import com.github.davishi25.statcheck.utils.TablistUtils
@@ -39,10 +39,12 @@ object AutoStatCheck {
     }
 
     @SubscribeEvent
-    fun onUserJoin(event: UserJoinEvent) {
-        if(!LocationUtils.inGame) return
+    fun onLocrawUpdate(event: LocrawUpdateEvent) {
+        if (!LocationUtils.isOnHypixel) return
+        if (!LocationUtils.inGame) return
         if (LocationUtils.gametype in obfuscatedGames) return
         val names = TablistUtils.getNames()
+        if (Config.debugMode) Utils.chat(names.toString())
         names.forEach { name ->
             if (name in checkedUsers) return@forEach
             checkedUsers.add(name)
@@ -52,8 +54,9 @@ object AutoStatCheck {
 
     @SubscribeEvent
     fun onChat(event: ClientChatReceivedEvent) {
-        if(!LocationUtils.inGame) return
-        if(LocationUtils.gametype in obfuscatedGames) return
+        if (!LocationUtils.isOnHypixel) return
+        if (!LocationUtils.inGame) return
+        if (LocationUtils.gametype in obfuscatedGames) return
         val msg = event.message.unformattedText
         val match = joinRegex.find(msg)
         match ?: return

@@ -1,14 +1,17 @@
 package com.github.davishi25.statcheck.utils
 
 import com.github.davishi25.statcheck.config.Config
+import com.github.davishi25.statcheck.event.LocrawUpdateEvent
 import com.github.davishi25.statcheck.event.UserJoinEvent
 import com.github.davishi25.statcheck.utils.Utils.mc
 import com.google.gson.JsonParser
 import net.minecraftforge.client.event.ClientChatReceivedEvent
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
 
+//TODO: refactor into helpers, utils should not interact with the event bus...
 object LocationUtils {
     var gametype: String? = null
     var mode: String? = null
@@ -42,6 +45,7 @@ object LocationUtils {
             Utils.modMessage("Detected mode: $gametype, duels mode: $mode, in game: $inGame")
         }
         waitTicks = 0
+        MinecraftForge.EVENT_BUS.post(LocrawUpdateEvent())
         event.isCanceled = true
     }
     @SubscribeEvent
