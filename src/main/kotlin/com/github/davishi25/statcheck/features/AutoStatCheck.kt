@@ -22,7 +22,7 @@ object AutoStatCheck {
         event.gametype ?: return
         if (event.gametype !in obfuscatedGames) return
 
-        val names = TablistUtils.getNames(includeSelf = true)
+        val names = TablistUtils.getNames(!LocationUtils.gametype.equals("DUELS"))
         if (Config.debugMode) Utils.modMessage("Detected names: $names")
 
         names.forEach { name ->

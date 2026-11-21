@@ -5,6 +5,7 @@ import com.github.davishi25.statcheck.utils.Utils.getPropertyByName
 import com.github.davishi25.statcheck.utils.Utils.roundToPrecision
 import com.github.davishi25.statcheck.api.playerdata.StatsData
 import com.github.davishi25.statcheck.api.playerdata.stats.DuelsData
+import com.github.davishi25.statcheck.utils.location.LocationUtils
 
 object DuelsParser : ApiParser {
     open class DuelsContext(private val gamemode: String?, private val duelsData: DuelsData) {
@@ -36,7 +37,10 @@ object DuelsParser : ApiParser {
         val ctx = DuelsContext(gamemode, statsData.duels)
         return "§rW: §a${ctx.getWins()}§r | L: §c${ctx.getLosses()}§r | WLR: ${ctx.getWLR().roundToPrecision(2)}"
     }
-    override fun getVitalStatLine(statsData: StatsData?): String = BedwarsParser.getStatLine(statsData)
+    override fun getVitalStatLine(statsData: StatsData?): String = getStatLine(
+        LocationUtils.getDuelsGamemode(),
+        statsData
+    )
 
     override fun toString() = "Duels"
 }
