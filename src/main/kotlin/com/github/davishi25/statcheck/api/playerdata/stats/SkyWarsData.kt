@@ -5,5 +5,5 @@ data class SkyWarsData(
     val losses: Int?,
     val kills: Int?,
     val deaths: Int?,
-    val skywars_experience: Int?
+    val levelFormattedWithBrackets: String?
 )

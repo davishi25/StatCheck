@@ -46,19 +46,35 @@ object BedwarsParser: ApiParser {
     override fun getStatLine(statsData: StatsData?): String {
         statsData ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = BedwarsContext(statsData.bedwars)
-        val star = ctx.getStar()
+        val level = ctx.getStar()
+        val star = colorize("[$level✫]", level)
         val wins = ctx.getWins()
         val finals = ctx.getFinals()
         val FKDR = ctx.getFKDR().roundToPrecision(2)
-        return "§r§6Star: §r$star §8| §r§aWins: §r$wins §8| §r§9Finals: §r$finals §8| §r§cFKDR: §r$FKDR"
+        return "§r$star §8| §r§aWins: §r$wins §8| §r§9Finals: §r$finals §8| §r§cFKDR: §r$FKDR"
     }
     override fun getVitalStatLine(statsData: StatsData?): String {
         statsData ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = BedwarsContext(statsData.bedwars)
-        val star = ctx.getStar()
+        val level = ctx.getStar()
+        val star = colorize("[$level✫]", level)
         val finals = ctx.getFinals()
         val FKDR = ctx.getFKDR().roundToPrecision(2)
-        return "§r§6Star: §r$star §8| §r§9Finals: §r$finals §8| §r§cFKDR: §r$FKDR"
+        return "§r$star §8| §r§9Finals: §r$finals §8| §r§cFKDR: §r$FKDR"
+    }
+
+    private fun colorize(prefix: String, level: Int): String = when {
+        level < 100 -> "§7$prefix"
+        level < 200 -> "§f$prefix"
+        level < 300 -> "§6$prefix"
+        level < 400 -> "§b$prefix"
+        level < 500 -> "§2$prefix"
+        level < 600 -> "§3$prefix"
+        level < 700 -> "§4$prefix"
+        level < 800 -> "§d$prefix"
+        level < 900 -> "§9$prefix"
+        level < 1000 -> "§5$prefix"
+        else -> "§c${prefix[0]}§6${prefix[1]}§e${prefix[2]}§a${prefix[3]}§b${prefix[4]}§d${prefix[5]}§5${prefix.drop(5)}"
     }
 
     override fun toString() = "Bedwars"

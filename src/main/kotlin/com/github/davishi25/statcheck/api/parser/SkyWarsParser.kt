@@ -19,27 +19,7 @@ object SkyWarsParser: ApiParser {
             val losses = getLosses()
             return getWins().toDouble() / (if(losses == 0) 1 else losses).toDouble()
         }
-        fun getStar(): Int {
-            var exp = skyWarsData.skywars_experience ?: 0
-            var level = 1
-
-            val easyLevelsXp = arrayOf(
-                10, 25, 50, 75, 100, 250, 500, 750, 1000,
-                1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4500
-            )
-
-            easyLevelsXp.forEach { cost ->
-                if (exp >= cost) {
-                    exp -= cost
-                    level++
-                } else {
-                    return level
-                }
-            }
-            if (exp > 0) level += exp / 5000
-
-            return level
-        }
+        fun getStar(): String = skyWarsData.levelFormattedWithBrackets ?: "[1*]"
     }
 
     override fun getStatLine(statsData: StatsData?): String {
@@ -50,7 +30,7 @@ object SkyWarsParser: ApiParser {
         val kills = ctx.getKills()
         val KDR = ctx.getKDR().roundToPrecision(2)
         val WLR = ctx.getWLR().roundToPrecision(2)
-        return "§r§6Star: §r$star §8| §r§cK: §r$kills §8| §r§cKD: §r$KDR §8| §r§aW: §r$wins §8| §r§aWL: §r$WLR"
+        return "§r$star §8| §r§cK: §r$kills §8| §r§cKD: §r$KDR §8| §r§aW: §r$wins §8| §r§aWL: §r$WLR"
     }
     override fun getVitalStatLine(statsData: StatsData?): String {
         statsData ?: return Utils.MISSING_STATLINE_ERROR
@@ -58,7 +38,7 @@ object SkyWarsParser: ApiParser {
         val star = ctx.getStar()
         val kills = ctx.getKills()
         val KDR = ctx.getKDR().roundToPrecision(2)
-        return "§r§6Star: §r$star §8| §r§cKills: §r$kills §8| §r§cKDR: §r$KDR"
+        return "§r$star §8| §r§cKills: §r$kills §8| §r§cKDR: §r$KDR"
     }
 
     override fun toString() = "SkyWars"
