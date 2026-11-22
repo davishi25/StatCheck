@@ -19,7 +19,7 @@ object API {
 
     fun getAPI(playerName: String): PlayerData {
         val name = playerName.lowercase()
-        getCachedData(name)?.let { return it }
+        getCachedData(name, true)?.let { return it }
         try {
             val url = URL("https://api.hypixel.net/player?key=${Config.apiKey}&name=$name")
             val reader = InputStreamReader(url.openStream(), StandardCharsets.UTF_8)
@@ -39,11 +39,11 @@ object API {
         }
     }
 
-    fun getCachedData(playerName: String): PlayerData? {
+    fun getCachedData(playerName: String, shouldCheckExpire: Boolean = false): PlayerData? {
         val name = playerName.lowercase()
         val item = recentCalls[name] ?: return null
 
-        if (System.currentTimeMillis() - item.timestamp < EXPIRY_TIME) return item.data
+        if (!shouldCheckExpire || System.currentTimeMillis() - item.timestamp < EXPIRY_TIME) return item.data
 
         recentCalls.remove(name)
         return null
