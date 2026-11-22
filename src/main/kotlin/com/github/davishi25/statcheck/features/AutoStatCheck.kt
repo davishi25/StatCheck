@@ -1,6 +1,5 @@
 package com.github.davishi25.statcheck.features
 
-import com.github.davishi25.statcheck.config.Config
 import com.github.davishi25.statcheck.event.impl.GameStartEvent
 import com.github.davishi25.statcheck.event.impl.LocrawUpdateEvent
 import com.github.davishi25.statcheck.utils.location.LocationUtils
@@ -23,7 +22,6 @@ object AutoStatCheck {
         if (event.gametype !in obfuscatedGames) return
 
         val names = TablistUtils.getNames(true)
-        if (Config.debugMode) Utils.modMessage("Detected names: $names")
 
         names.forEach { name ->
             try {
@@ -44,7 +42,6 @@ object AutoStatCheck {
         if (!LocationUtils.inGame) return
         if (LocationUtils.gametype in obfuscatedGames) return
         val names = TablistUtils.getNames(includeSelf = true)
-        if (Config.debugMode) Utils.chat(names.toString())
         names.forEach { name ->
             if (name in checkedUsers) return@forEach
             checkedUsers.add(name)

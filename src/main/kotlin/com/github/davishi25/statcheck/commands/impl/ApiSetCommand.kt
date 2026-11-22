@@ -14,8 +14,7 @@ object ApiSetCommand: CommandBase() {
     override fun processCommand(sender: ICommandSender, args: Array<String>) {
         when {
             args.size == 1 && args[0] == "clear" -> {
-                API.getRecentCalls().clear()
-                API.getNicks().clear()
+                API.clearCache()
                 Utils.modMessage("Successfully cleared stored API responses!")
             }
             args.size == 2 && args[0] == "set" -> {

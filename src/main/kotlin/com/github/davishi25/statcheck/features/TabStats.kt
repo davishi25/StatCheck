@@ -25,7 +25,7 @@ object TabStats {
                 info.playerTeam?.colorPrefix ?: return@forEach
             } else ""
 
-            val cachedData = API.getRecentCalls()[name.lowercase()]
+            val cachedData = API.getCachedData(name)
             val formattedName = if (cachedData != null) {
                 Utils.getFormattedName(cachedData)
             } else "§7$name"
@@ -34,7 +34,7 @@ object TabStats {
             val statComponent = if (cachedStats != null) {
                 StatUtils.checkVitalStats(cachedStats, parser)
             } else {
-                if (API.getNicks().contains(name.lowercase())) "§8(§cNicked§8)"
+                if (API.isNicked(name)) "§8(§cNicked§8)"
                 else "§8(§7Fetching...§8)"
             }
 

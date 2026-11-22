@@ -24,7 +24,7 @@ object StatUtils {
 
             Utils.chat("$padding\n§8| $nameLine§8| $statLine\n$padding")
         } catch (e: Exception) {
-            Utils.modMessage(e.message)
+            Utils.modMessage(e.message?.substringAfter(": "))
         }
     }
 
@@ -61,7 +61,7 @@ object StatUtils {
 
             Utils.chat("$padding\n§8| $nameLine§8| $statLine\n$padding")
         } catch (e: Exception) {
-            Utils.modMessage(e.message)
+            Utils.modMessage(e.message?.substringAfter(": "))
         }
     }
 

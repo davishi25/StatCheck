@@ -13,29 +13,48 @@ import java.util.concurrent.ConcurrentHashMap
 
 object API {
     private val gson = Gson()
-    private val recentCalls = ConcurrentHashMap<String, PlayerData>()
+    private val recentCalls = ConcurrentHashMap<String, CacheItem<PlayerData>>()
     private val potentialNicks = ConcurrentHashMap.newKeySet<String>()
+    private const val EXPIRY_TIME = 150000L
+
     fun getAPI(playerName: String): PlayerData {
         val name = playerName.lowercase()
-        if (recentCalls.containsKey(name)) return recentCalls[name]!!
+        getCachedData(name)?.let { return it }
         try {
             val url = URL("https://api.hypixel.net/player?key=${Config.apiKey}&name=$name")
             val reader = InputStreamReader(url.openStream(), StandardCharsets.UTF_8)
 
             val apiResponse = gson.fromJson(reader, JsonObject::class.java)
+            reader.close()
             if (apiResponse.get("player") is JsonNull) {
                 potentialNicks.add(name)
                 throw Exception("§c$playerName does not exist. Are they nicked?")
             }
             val playerResponse = apiResponse.getAsJsonObject("player")
             val playerData = gson.fromJson(playerResponse, PlayerData::class.java)
-            recentCalls[name] = playerData
+            recentCalls[name] = CacheItem(System.currentTimeMillis(), playerData)
             return playerData
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
     }
 
-    fun getRecentCalls() = recentCalls
-    fun getNicks(): ConcurrentHashMap.KeySetView<String, Boolean> = potentialNicks
+    fun getCachedData(playerName: String): PlayerData? {
+        val name = playerName.lowercase()
+        val item = recentCalls[name] ?: return null
+
+        if (System.currentTimeMillis() - item.timestamp < EXPIRY_TIME) return item.data
+
+        recentCalls.remove(name)
+        return null
+    }
+
+    fun isNicked(name: String): Boolean = potentialNicks.contains(name.lowercase())
+
+    fun clearCache() {
+        recentCalls.clear()
+        potentialNicks.clear()
+    }
+
+    data class CacheItem<T>(val timestamp: Long, val data: T)
 }
