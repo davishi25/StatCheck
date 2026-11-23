@@ -1,9 +1,11 @@
 package com.github.davishi25.statcheck.utils.location
 
 import com.github.davishi25.statcheck.config.Config
+import com.github.davishi25.statcheck.event.impl.GameStartEvent
 import com.github.davishi25.statcheck.event.impl.LocrawUpdateEvent
 import com.github.davishi25.statcheck.event.impl.UserJoinEvent
 import com.github.davishi25.statcheck.utils.Utils
+import com.github.davishi25.statcheck.utils.location.LocationUtils.gameStarted
 import com.github.davishi25.statcheck.utils.location.LocationUtils.gametype
 import com.github.davishi25.statcheck.utils.location.LocationUtils.inGame
 import com.github.davishi25.statcheck.utils.location.LocationUtils.isOnHypixel
@@ -18,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent
 object LocationHelper {
     private var awaitingLocraw = false
     private var waitTicks = 0
+
     @SubscribeEvent
     fun onWorldChange(event: WorldEvent.Unload) = resetLocation()
 
@@ -46,16 +49,24 @@ object LocationHelper {
         MinecraftForge.EVENT_BUS.post(LocrawUpdateEvent())
         event.isCanceled = true
     }
+
     @SubscribeEvent
     fun onTick(event: TickEvent.ClientTickEvent) {
         if (!awaitingLocraw) return
         if (waitTicks <= 0) return
         if (--waitTicks == 0) Utils.sendMessage("/locraw")
     }
+
+    @SubscribeEvent
+    fun onGameStart(event: GameStartEvent) {
+        gameStarted = true
+    }
+
     fun resetLocation() {
         gametype = null
         mode = null
         awaitingLocraw = false
         waitTicks = 0
+        gameStarted = false
     }
 }

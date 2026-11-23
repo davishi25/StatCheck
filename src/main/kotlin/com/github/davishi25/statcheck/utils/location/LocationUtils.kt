@@ -7,13 +7,14 @@ object LocationUtils {
     var gametype: String? = null
     var mode: String? = null
     val inGame: Boolean get() = mode != null
+    var gameStarted: Boolean = false
     val isOnHypixel: Boolean get() = mc.currentServerData?.serverIP?.contains("hypixel") ?: false
 
     fun getDuelsGamemode(): String? {
         mode ?: return null
         val gamemode = mode!!.lowercase()
         Utils.duelsModes.forEach { duelMode ->
-            if(gamemode.contains(duelMode)) return duelMode
+            if (gamemode.contains(duelMode)) return duelMode
         }
         return null
     }

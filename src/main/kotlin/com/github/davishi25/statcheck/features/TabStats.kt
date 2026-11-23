@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
 object TabStats {
     private val renderedInfo = HashSet<NetworkPlayerInfo>()
+    private val cachedTeams = mutableMapOf<String, String>()
+    private val teamGames = listOf("BEDWARS")
 
     @SubscribeEvent
     fun onRenderGameOverlay(event: RenderGameOverlayEvent.Pre) {
@@ -26,9 +28,7 @@ object TabStats {
             info ?: return@forEach
             if (renderedInfo.contains(info)) return@forEach
             val name = info.gameProfile?.name ?: return@forEach
-            val teamComponent = if (LocationUtils.gametype == "BEDWARS") {
-                info.playerTeam?.colorPrefix ?: return@forEach
-            } else ""
+            val teamComponent = getTeam(info) ?: return@forEach
 
             val cachedData = API.getCachedData(name)
             val formattedName = if (cachedData != null) {
@@ -45,12 +45,28 @@ object TabStats {
 
             val displayComponent = ChatComponentText("$teamComponent$formattedName")
             info.displayName = displayComponent.appendText(" $statComponent")
-            cachedData?.let { renderedInfo.add(info) }
+            cachedData?.let {
+                if (!teamGames.contains(LocationUtils.gametype) || teamComponent.isNotEmpty()) {
+                    renderedInfo.add(info)
+                }
+            }
         }
     }
 
     @SubscribeEvent
     fun onWorldUnload(event: WorldEvent.Unload) {
         renderedInfo.clear()
+        cachedTeams.clear()
+    }
+
+    private fun getTeam(info: NetworkPlayerInfo): String? {
+        if (!teamGames.contains(LocationUtils.gametype)) return ""
+        if (!LocationUtils.gameStarted) return null
+        cachedTeams[info.gameProfile.name]?.let { return it }
+
+        val colorPrefix = info.playerTeam?.colorPrefix ?: return null
+        if (colorPrefix.isNotEmpty()) cachedTeams[info.gameProfile.name] = colorPrefix
+
+        return colorPrefix
     }
 }
