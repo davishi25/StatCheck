@@ -15,7 +15,7 @@ object API {
     private val gson = Gson()
     private val recentCalls = ConcurrentHashMap<String, CacheItem<PlayerData>>()
     private val potentialNicks = ConcurrentHashMap.newKeySet<String>()
-    private const val EXPIRY_TIME = 150000L
+    private const val EXPIRY_TIME = 180000L
 
     fun getAPI(playerName: String): PlayerData {
         val name = playerName.lowercase()
