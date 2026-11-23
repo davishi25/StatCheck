@@ -21,6 +21,8 @@ object API {
         val name = playerName.lowercase()
         getCachedData(name, true)?.let { return it }
         try {
+            if (potentialNicks.contains(name)) throw Exception("§c$playerName is nicked!")
+
             val url = URL("https://api.hypixel.net/player?key=${Config.apiKey}&name=$name")
             val reader = InputStreamReader(url.openStream(), StandardCharsets.UTF_8)
 
