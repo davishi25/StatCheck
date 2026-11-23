@@ -44,7 +44,7 @@ object BedwarsParser: ApiParser {
     }
 
     override fun getStatLine(statsData: StatsData?): String {
-        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        statsData?.bedwars ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = BedwarsContext(statsData.bedwars)
         val level = ctx.getStar()
         val star = colorize("[$level✫]", level)
@@ -54,7 +54,7 @@ object BedwarsParser: ApiParser {
         return "§r$star §8| §r§aWins: §r$wins §8| §r§9Finals: §r$finals §8| §r§cFKDR: §r$FKDR"
     }
     override fun getVitalStatLine(statsData: StatsData?): String {
-        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        statsData?.bedwars ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = BedwarsContext(statsData.bedwars)
         val level = ctx.getStar()
         val star = colorize("[$level✫]", level)

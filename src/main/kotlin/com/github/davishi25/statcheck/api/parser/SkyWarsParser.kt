@@ -23,7 +23,7 @@ object SkyWarsParser: ApiParser {
     }
 
     override fun getStatLine(statsData: StatsData?): String {
-        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        statsData?.skyWars ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = SkyWarsContext(statsData.skyWars)
         val star = ctx.getStar()
         val wins = ctx.getWins()
@@ -33,7 +33,7 @@ object SkyWarsParser: ApiParser {
         return "§r$star§8| §r§cK: §r$kills §8| §r§cKD: §r$KDR §8| §r§aW: §r$wins §8| §r§aWL: §r$WLR"
     }
     override fun getVitalStatLine(statsData: StatsData?): String {
-        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        statsData?.skyWars ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = SkyWarsContext(statsData.skyWars)
         val star = ctx.getStar()
         val kills = ctx.getKills()

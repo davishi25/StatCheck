@@ -33,7 +33,7 @@ object DuelsParser : ApiParser {
 
     override fun getStatLine(statsData: StatsData?) = getStatLine(null, statsData)
     fun getStatLine(gamemode: String?, statsData: StatsData?): String {
-        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        statsData?.duels ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = DuelsContext(gamemode, statsData.duels)
         return "§aW: §r${ctx.getWins()} §8| §cL: §r${ctx.getLosses()} §8| §bWLR: §r${ctx.getWLR().roundToPrecision(2)}"
     }

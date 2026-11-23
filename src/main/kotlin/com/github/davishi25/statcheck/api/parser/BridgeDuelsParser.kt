@@ -14,7 +14,7 @@ object BridgeDuelsParser: ApiParser{
         fun getCTFLosses() = getDuelsData().capture_threes_losses ?: 0
     }
     override fun getStatLine(statsData: StatsData?): String {
-        statsData ?: return Utils.MISSING_STATLINE_ERROR
+        statsData?.duels ?: return Utils.MISSING_STATLINE_ERROR
         val ctx = BridgeDuelsContext(statsData.duels)
         return "§aW: §r${ctx.getWins()} §8| §cL: §r${ctx.getLosses()} §8| §bWLR: §r${ctx.getWLR().roundToPrecision(2)}"
     }
