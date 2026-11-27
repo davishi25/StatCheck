@@ -24,7 +24,7 @@ object EventHandler {
         val msg = event.message.unformattedText
 
         if (isGameStarting && msg.contains("▬")) {
-            statTick = 30
+            statTick = 5
             newWorld = false
             isGameStarting = false
         }
@@ -34,13 +34,15 @@ object EventHandler {
     @SubscribeEvent
     fun onTickStart(event: TickEvent.ClientTickEvent) {
         if (event.phase != TickEvent.Phase.START) return
-        if (statTick > 0) {
-            statTick --
-        } else if (statTick == 0) {
+        if (statTick < 0) return
+
+        if (statTick == 0) {
             MinecraftForge.EVENT_BUS.post(GameStartEvent(LocationUtils.gametype, LocationUtils.mode))
             if (Config.debugMode) Utils.modMessage("Detected Game Start!")
             statTick = -1
+            return
         }
+        statTick--
     }
 
     @SubscribeEvent
