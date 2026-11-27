@@ -21,4 +21,13 @@ object TablistUtils {
         if (Config.debugMode) Utils.modMessage("Detected names: $names")
         return names
     }
+
+    fun getEntries(): Set<String> {
+        val entries = mutableSetOf<String>()
+        tablist.forEach { playerInfo ->
+            playerInfo ?: return@forEach
+            playerInfo.gameProfile?.name?.let { entries.add(it.replace('§','&')) }
+        }
+        return entries
+    }
 }
